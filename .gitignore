@@ -41,3 +41,4 @@ yarn-error.log*
 .tmp-header.png
 /playwright-report/
 /test-results/
+supabase/.temp/
