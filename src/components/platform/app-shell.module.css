@@ -1,0 +1,100 @@
+.shell {
+  min-height: 100dvh;
+  background:
+    radial-gradient(
+      circle at 20% -10%,
+      rgb(255 246 232 / 0.9),
+      transparent 45%
+    ),
+    radial-gradient(circle at 90% 0%, rgb(232 216 194 / 0.7), transparent 38%),
+    linear-gradient(180deg, #f6ead9 0%, #f5ebdf 48%, #f8f1e8 100%);
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1px solid rgb(0 0 0 / 0.1);
+  background: rgb(255 255 255 / 0.75);
+  backdrop-filter: blur(9px);
+}
+
+.topbarInner {
+  margin: 0 auto;
+  display: flex;
+  width: min(1120px, calc(100% - 2rem));
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  text-decoration: none;
+}
+
+.brandMark {
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-ink);
+}
+
+.brandSub {
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--color-muted);
+  text-transform: uppercase;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.navLink {
+  border-radius: 999px;
+  padding: 0.4rem 0.78rem;
+  font-size: 0.88rem;
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: background-color 0.16s ease;
+}
+
+.navLink:hover,
+.navLink:focus-visible {
+  background: rgb(0 0 0 / 0.08);
+  outline: none;
+}
+
+.main {
+  margin: 0 auto;
+  width: min(1120px, calc(100% - 2rem));
+  padding: 1.4rem 0 2.4rem;
+}
+
+.panel {
+  border: 1px solid rgb(0 0 0 / 0.12);
+  border-radius: 18px;
+  background: rgb(255 255 255 / 0.72);
+  box-shadow: 0 14px 36px rgb(0 0 0 / 0.09);
+  backdrop-filter: blur(5px);
+}
+
+@media (max-width: 900px) {
+  .topbarInner {
+    width: min(1120px, calc(100% - 1rem));
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .main {
+    width: min(1120px, calc(100% - 1rem));
+  }
+}

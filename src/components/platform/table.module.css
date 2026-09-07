@@ -1,0 +1,31 @@
+.tableWrap {
+  overflow: auto;
+  padding: 0 1rem 1rem;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.table th,
+.table td {
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid rgb(30 27 22 / 0.08);
+  text-align: left;
+  font-size: 0.92rem;
+}
+.table thead th {
+  color: #6e5b47;
+  font-weight: 700;
+}
+.updateButton {
+  background: #7c5f3c;
+  color: #fff;
+  border: 0;
+  padding: 0.42rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.updateButton:hover {
+  opacity: 0.95;
+}

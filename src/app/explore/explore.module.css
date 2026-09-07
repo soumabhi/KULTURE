@@ -1,0 +1,458 @@
+.container {
+  min-height: 100dvh;
+  width: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    #fbf6ee 0%,
+    #f3e6d4 62%,
+    #e8d5be 100%
+  );
+  color: #181512;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  position: relative;
+  overflow-x: hidden;
+  padding: 1rem 1.25rem 4.5rem;
+  box-sizing: border-box;
+
+  /* Hide scrollbars completely */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.topBar {
+  max-width: 44rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.5rem 0 1rem;
+  animation: slow-fade-in 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.closeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 50%;
+  border: 1px solid rgba(215, 195, 170, 0.8);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #181512;
+  font-size: 1.15rem;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 2px 8px rgba(100, 70, 40, 0.06);
+}
+
+.closeButton:hover,
+.closeButton:active {
+  background: #ffffff;
+  transform: scale(1.06);
+  color: #000000;
+}
+
+.contentWrapper {
+  max-width: 44rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Full Viewport Top-Centered Hero Section (Equally Spread) */
+.heroSection {
+  min-height: calc(88dvh - 3rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+  padding: 1rem 0 2.5rem;
+  box-sizing: border-box;
+  max-width: 38rem;
+  margin: 0 auto;
+}
+
+.headline {
+  font-size: clamp(2.1rem, 7vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.14;
+  letter-spacing: -0.035em;
+  color: #181512;
+  margin: 0;
+  text-align: center;
+  animation: slow-slide-up 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+}
+
+.bottleShowcase {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  font-size: 3.25rem;
+  animation: slow-slide-up 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+  user-select: none;
+  margin: 0.5rem 0;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.25rem 0;
+  animation: slow-slide-up 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+
+.subtitle {
+  font-size: clamp(0.92rem, 3vw, 1.12rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #78716c;
+  margin: 0;
+  text-align: center;
+  animation: slow-slide-up 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;
+}
+
+.subtext {
+  font-size: clamp(0.98rem, 3.1vw, 1.15rem);
+  line-height: 1.6;
+  color: #44403c;
+  margin: 0;
+  max-width: 32rem;
+  font-weight: 450;
+  text-align: center;
+  animation: slow-slide-up 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
+}
+
+/* ==========================================================================
+   The Kulture System Flow Diagram
+   ========================================================================== */
+.systemSection {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(215, 195, 170, 0.75);
+  border-radius: 24px;
+  padding: 1.65rem 1.4rem;
+  box-shadow:
+    0 12px 28px -6px rgba(100, 70, 40, 0.06),
+    0 2px 6px rgba(100, 70, 40, 0.03);
+  margin-top: 1.5rem;
+}
+
+.systemHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.systemBadge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7c2d12;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(215, 195, 170, 0.6);
+}
+
+.systemTitle {
+  font-size: 1.35rem;
+  font-weight: 750;
+  color: #181512;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.systemTrack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+}
+
+.stepItemWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.stepNode {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #ffffff;
+  border: 1px solid rgba(215, 195, 170, 0.6);
+  box-shadow:
+    0 4px 12px rgba(100, 70, 40, 0.06),
+    0 1px 3px rgba(100, 70, 40, 0.03);
+  padding: 0.65rem 1.1rem;
+  border-radius: 14px;
+  min-width: 12.5rem;
+  justify-content: center;
+}
+
+.stepIconBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #181512;
+}
+
+.stepEmoji {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.stepLabel {
+  font-size: 0.88rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  color: #181512;
+}
+
+.connectorLine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 1.5rem;
+  width: 2px;
+  background: rgba(24, 21, 18, 0.25);
+  margin: 0.2rem 0;
+  position: relative;
+}
+
+.connectorDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #181512;
+}
+
+/* ==========================================================================
+   3 Core Pillars Grid
+   ========================================================================== */
+.pillarsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  margin-top: 1.5rem;
+}
+
+.pillarCard {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(215, 195, 170, 0.75);
+  border-radius: 20px;
+  padding: 1.4rem 1.3rem;
+  box-shadow:
+    0 12px 28px -6px rgba(100, 70, 40, 0.07),
+    0 2px 6px rgba(100, 70, 40, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pillarCard:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 36px -8px rgba(100, 70, 40, 0.1),
+    0 4px 10px rgba(100, 70, 40, 0.04);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+}
+
+.cardIconBox {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 12px;
+  background: #181512;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+}
+
+.cardEmoji {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.stepNum {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: rgba(24, 21, 18, 0.35);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #181512;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.4rem;
+}
+
+.cardDesc {
+  font-size: 0.94rem;
+  line-height: 1.5;
+  color: #45372c;
+  margin: 0;
+}
+
+/* ==========================================================================
+   Scroll-triggered Reveal Animations
+   ========================================================================== */
+.revealItem {
+  opacity: 0;
+  transform: translateY(36px);
+  transition:
+    opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.revealItem.inView {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   Closing Action Section
+   ========================================================================== */
+.closingSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  margin-top: 3.5rem;
+  padding: 2rem 1rem 1rem;
+}
+
+.closingTitle {
+  font-size: clamp(1.75rem, 5.5vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: #181512;
+  margin: 0;
+  text-align: center;
+}
+
+.closingButtonWrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.partnerKeycap {
+  font-size: 1rem !important;
+  padding: 0.85rem 1.75rem !important;
+}
+
+/* Slow Graceful Entrance Keyframes */
+@keyframes slow-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slow-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Desktop / Tablet Breakpoints
+   ========================================================================== */
+@media (min-width: 640px) {
+  .container {
+    padding: 1.5rem 2rem 5rem;
+  }
+
+  /* Desktop System Flow: Horizontal connected track */
+  .systemTrack {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .stepItemWrapper {
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    flex: 1;
+  }
+
+  .stepItemWrapper:last-child {
+    flex: 0;
+  }
+
+  .stepNode {
+    min-width: auto;
+    padding: 0.55rem 0.85rem;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex-shrink: 0;
+  }
+
+  .stepLabel {
+    font-size: 0.72rem;
+  }
+
+  .connectorLine {
+    height: 2px;
+    width: 100%;
+    flex: 1;
+    flex-direction: row;
+    margin: 0 0.4rem;
+  }
+
+  .connectorDot {
+    display: none;
+  }
+
+  .pillarsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+}

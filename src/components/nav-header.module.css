@@ -1,0 +1,223 @@
+.headerActions {
+  position: absolute;
+  z-index: 20;
+  top: calc(var(--logo-top) + var(--logo-size) / 2 - 1.65rem);
+  right: var(--page-gutter);
+  transform: translateY(-50%);
+  animation: header-in 0.5s ease 5.35s both;
+}
+
+@keyframes header-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.desktopActions {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.expansionLink {
+  position: relative;
+  flex-shrink: 0;
+  padding: 0.25rem 0.2rem;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-muted, #737373);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  text-decoration: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.expansionLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1.5px;
+  background-color: #78716c;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.expansionLink:hover {
+  color: var(--color-ink, #262626);
+}
+
+.expansionLink:hover::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.mobileTrigger {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .headerActions {
+    top: calc(var(--logo-top) + 0.45rem);
+    transform: none;
+  }
+
+  .desktopActions {
+    display: none !important;
+  }
+
+  .mobileTrigger {
+    display: flex !important;
+  }
+}
+
+.drawerOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  background: rgba(18, 14, 11, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.drawerOverlay.isOpen {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  width: min(75vw, 17rem);
+  background: #fbf6ee;
+  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.16);
+  border-left: 1px solid rgba(215, 195, 170, 0.5);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 1.5rem;
+}
+
+.drawer.isOpen {
+  transform: translateX(0);
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 1.5rem;
+}
+
+.closeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--color-muted, #737373);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.closeButton:hover,
+.closeButton:active {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--color-ink, #262626);
+}
+
+.drawerNavList {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding-top: 0.5rem;
+}
+
+.drawerNavLink {
+  position: relative;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-muted, #737373);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  padding: 0.25rem 0.2rem;
+  display: inline-block;
+  text-align: left;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.drawerNavLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1.5px;
+  background-color: #78716c;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.drawerNavLink:hover,
+.drawerNavLink:active {
+  color: var(--color-ink, #262626);
+}
+
+.drawerNavLink:hover::after,
+.drawerNavLink:active::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.iconKeycap {
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 12px;
+}
+
+.iconSymbol {
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

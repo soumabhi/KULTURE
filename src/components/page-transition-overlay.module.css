@@ -1,0 +1,30 @@
+.wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.wrapper.active {
+  pointer-events: auto;
+}
+
+.curtain {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  background: radial-gradient(
+    ellipse at center,
+    #fbf6ee 0%,
+    #f3e6d4 62%,
+    #e8d5be 100%
+  );
+  clip-path: url(#kulture-transition-clip);
+  -webkit-clip-path: url(#kulture-transition-clip);
+  will-change: clip-path;
+  pointer-events: none;
+}

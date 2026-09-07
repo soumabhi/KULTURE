@@ -1,0 +1,102 @@
+.stage {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  padding: 48px;
+  padding-top: calc(var(--logo-top) + var(--logo-size) + 0.75rem);
+  pointer-events: none;
+  animation: cover-in 0.55s ease 5.35s both;
+  contain: layout style;
+}
+
+.scene {
+  --bottle-h: clamp(24rem, 52vh, 34rem);
+  --bottle-w: calc(var(--bottle-h) * 268 / 743);
+  width: min(100vw, 96rem);
+  height: calc(var(--bottle-h) + 12rem);
+  position: relative;
+  overflow: visible;
+  contain: layout style;
+}
+
+.bottle {
+  position: absolute;
+  top: 67%;
+  left: 50%;
+  width: var(--bottle-w);
+  height: var(--bottle-h);
+  margin: calc(var(--bottle-h) / -2) 0 0 calc(var(--bottle-w) / -2);
+  background: transparent;
+  transform-origin: 50% 100%;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  contain: layout style;
+  /* Cheap rectangular shadow — drop-shadow filter was the main GPU hitch */
+  filter: none;
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  /* Soft shadow without per-frame filter recomposite cost */
+  box-shadow: none;
+}
+
+@keyframes cover-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1024px) {
+  .stage {
+    padding: 24px;
+    padding-top: calc(var(--logo-top) + var(--logo-size) + 1rem);
+  }
+
+  .scene {
+    --bottle-h: clamp(19rem, 42vh, 26rem);
+  }
+
+  .bottle {
+    top: 67%;
+  }
+}
+
+@media (max-width: 640px) {
+  .stage {
+    padding: 0 12px 2rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .scene {
+    --bottle-h: clamp(15.5rem, 34vh, 20rem);
+    width: 100vw;
+    height: calc(var(--bottle-h) + 5.5rem);
+  }
+
+  .bottle {
+    top: 58%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage {
+    animation: none;
+    opacity: 1;
+  }
+}

@@ -1,0 +1,97 @@
+.shell {
+  display: grid;
+  min-height: 100dvh;
+  place-items: center;
+  align-content: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: radial-gradient(
+    ellipse at center,
+    #fbf6ee 0%,
+    #f3e6d4 62%,
+    #e8d5be 100%
+  );
+}
+
+.header {
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #9a6a2f;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0.5rem 0 0;
+  color: #241f1b;
+  font-size: clamp(1.2rem, 3.4vw, 1.6rem);
+}
+
+.canvasWrap {
+  position: relative;
+  width: min(100%, 400px);
+  border: 1px solid rgb(36 31 27 / 0.14);
+  border-radius: 18px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 18%, rgb(227 179 79 / 0.16), transparent 55%),
+    rgb(255 253 249 / 0.8);
+  box-shadow: 0 24px 60px rgb(60 42 20 / 0.16);
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  touch-action: none;
+  cursor: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+  background: rgb(255 250 240 / 0.92);
+  backdrop-filter: blur(6px);
+}
+
+.overlayText {
+  max-width: 17rem;
+  margin: 0;
+  color: #5f564a;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.scoreLine {
+  margin: 0;
+  color: #241f1b;
+  font-size: 1.5rem;
+}
+
+.scoreLine strong {
+  color: #9a6a2f;
+  font-size: 1.9rem;
+}
+
+.error {
+  margin: 0;
+  color: #8a3024;
+  font-size: 0.85rem;
+}
+
+.hint {
+  margin: 0;
+  color: #8a7a63;
+  font-size: 0.78rem;
+}

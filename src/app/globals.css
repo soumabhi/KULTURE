@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: oklch(58% 0.008 250);
+  --color-ink: oklch(24% 0.008 250);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.stage {
+  --page-gutter: calc(100vw / 6);
+  --logo-size: 5.75rem;
+  --logo-top: 0.9rem;
+  background:
+    radial-gradient(ellipse at center, #fbf6ee 0%, #f3e6d4 62%, #e8d5be 100%);
+}
+
+@media (max-width: 640px) {
+  .stage {
+    --page-gutter: 1.25rem;
+    --logo-size: 4.5rem;
+    --logo-top: 0.85rem;
+  }
+}
+
+.chakra-spin {
+  transform-origin: center;
+  will-change: transform;
+  animation:
+    chakra-burst 2.4s cubic-bezier(0.05, 0.75, 0.15, 1) forwards,
+    chakra-spin 12s linear 2.4s infinite;
+}
+
+@keyframes chakra-burst {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(1800deg);
+  }
+}
+
+@keyframes chakra-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.kultur-pop {
+  transform-origin: center;
+  will-change: transform;
+  animation: kultur-pop 1.55s cubic-bezier(0.22, 1.35, 0.36, 1) 0.45s both;
+}
+
+@keyframes kultur-pop {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes rise-out {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(110%);
+  }
+}
+
+.enter-water {
+  animation:
+    rise-in 1.05s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both,
+    rise-out 1.05s cubic-bezier(0.7, 0, 0.84, 0) 4.3s forwards;
+}
+
+.enter-side {
+  animation:
+    rise-in 1.15s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both,
+    rise-out 1.15s cubic-bezier(0.7, 0, 0.84, 0) 3.6s forwards;
+}
+
+@media (max-width: 768px) {
+  .enter-water,
+  .enter-side {
+    display: none !important;
+  }
+}
+
+.lockup {
+  --lockup-size: min(62vmin, 30rem);
+  --logo-inset: var(--page-gutter);
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  width: var(--lockup-size);
+  transform: translate(-50%, -50%);
+  transform-origin: 0 0;
+  will-change: transform, top, left;
+}
+
+.lockup-to-logo {
+  animation: lockup-to-logo 1.05s cubic-bezier(0.33, 0.08, 0.18, 1) 4.3s forwards;
+}
+
+.lockup.is-hot {
+  cursor: pointer;
+}
+
+@keyframes lockup-to-logo {
+  from {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    transform-origin: 0 0;
+  }
+  to {
+    top: var(--logo-top);
+    left: var(--logo-inset);
+    transform: translate(0, 0) scale(calc(var(--logo-size) / var(--lockup-size)));
+    transform-origin: 0 0;
+  }
+}
+
+.chakra-travel {
+  will-change: transform;
+  animation: chakra-travel 1.05s cubic-bezier(0.22, 0.7, 0.28, 1) 4.3s forwards;
+}
+
+@keyframes chakra-travel {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(720deg);
+  }
+}
+
+@keyframes header-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chakra-spin,
+  .kultur-pop,
+  .enter-water,
+  .enter-side,
+  .chakra-travel {
+    animation: none;
+  }
+
+  .lockup-to-logo {
+    animation: none;
+    top: var(--logo-top);
+    left: var(--logo-inset);
+    transform-origin: 0 0;
+    transform: translate(0, 0) scale(calc(var(--logo-size) / var(--lockup-size)));
+  }
+}
