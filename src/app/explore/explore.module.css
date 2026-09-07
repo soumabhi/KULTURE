@@ -14,15 +14,17 @@
   padding: 1rem 1.25rem 4.5rem;
   box-sizing: border-box;
 
-  /* Hide scrollbars completely */
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  /* Universal scrollbar hide */
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 
 .container::-webkit-scrollbar {
-  display: none;
-  width: 0;
-  height: 0;
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .topBar {
@@ -32,7 +34,7 @@
   align-items: center;
   justify-content: flex-end;
   padding: 0.5rem 0 1rem;
-  animation: slow-fade-in 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: fast-fade-in 0.3s ease both;
 }
 
 .closeButton {
@@ -42,16 +44,14 @@
   width: 2.35rem;
   height: 2.35rem;
   border-radius: 50%;
-  border: 1px solid rgba(215, 195, 170, 0.8);
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(215, 195, 170, 0.85);
+  background: rgba(255, 255, 255, 0.9);
   color: #181512;
   font-size: 1.15rem;
   line-height: 1;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: transform 0.15s ease, background-color 0.15s ease;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   box-shadow: 0 2px 8px rgba(100, 70, 40, 0.06);
@@ -71,7 +71,7 @@
   flex-direction: column;
 }
 
-/* Full Viewport Top-Centered Hero Section (Equally Spread) */
+/* Full Viewport Top-Centered Hero Section */
 .heroSection {
   min-height: calc(88dvh - 3rem);
   display: flex;
@@ -83,6 +83,7 @@
   box-sizing: border-box;
   max-width: 38rem;
   margin: 0 auto;
+  contain: content;
 }
 
 .headline {
@@ -93,7 +94,7 @@
   color: #181512;
   margin: 0;
   text-align: center;
-  animation: slow-slide-up 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+  animation: fast-fade-in 0.35s ease both;
 }
 
 .bottleShowcase {
@@ -104,17 +105,9 @@
   border: none;
   box-shadow: none;
   font-size: 3.25rem;
-  animation: slow-slide-up 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+  animation: fast-fade-in 0.35s ease 0.05s both;
   user-select: none;
   margin: 0.5rem 0;
-}
-
-.iconWrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0.25rem 0;
-  animation: slow-slide-up 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
 }
 
 .subtitle {
@@ -124,7 +117,7 @@
   color: #78716c;
   margin: 0;
   text-align: center;
-  animation: slow-slide-up 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;
+  animation: fast-fade-in 0.35s ease 0.1s both;
 }
 
 .subtext {
@@ -135,23 +128,23 @@
   max-width: 32rem;
   font-weight: 450;
   text-align: center;
-  animation: slow-slide-up 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
+  animation: fast-fade-in 0.35s ease 0.15s both;
 }
 
 /* ==========================================================================
    The Kulture System Flow Diagram
    ========================================================================== */
 .systemSection {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.88);
   border: 1px solid rgba(215, 195, 170, 0.75);
   border-radius: 24px;
   padding: 1.65rem 1.4rem;
   box-shadow:
-    0 12px 28px -6px rgba(100, 70, 40, 0.06),
+    0 8px 24px -4px rgba(100, 70, 40, 0.06),
     0 2px 6px rgba(100, 70, 40, 0.03);
   margin-top: 1.5rem;
+  contain: content;
+  transform: translateZ(0);
 }
 
 .systemHeader {
@@ -169,7 +162,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #7c2d12;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.95);
   padding: 0.25rem 0.65rem;
   border-radius: 999px;
   border: 1px solid rgba(215, 195, 170, 0.6);
@@ -205,7 +198,7 @@
   background: #ffffff;
   border: 1px solid rgba(215, 195, 170, 0.6);
   box-shadow:
-    0 4px 12px rgba(100, 70, 40, 0.06),
+    0 3px 10px rgba(100, 70, 40, 0.05),
     0 1px 3px rgba(100, 70, 40, 0.03);
   padding: 0.65rem 1.1rem;
   border-radius: 14px;
@@ -218,11 +211,6 @@
   align-items: center;
   justify-content: center;
   color: #181512;
-}
-
-.stepEmoji {
-  font-size: 1.25rem;
-  line-height: 1;
 }
 
 .stepLabel {
@@ -259,26 +247,26 @@
   flex-direction: column;
   gap: 1.15rem;
   margin-top: 1.5rem;
+  contain: content;
 }
 
 .pillarCard {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(215, 195, 170, 0.75);
   border-radius: 20px;
   padding: 1.4rem 1.3rem;
   box-shadow:
-    0 12px 28px -6px rgba(100, 70, 40, 0.07),
+    0 8px 24px -4px rgba(100, 70, 40, 0.06),
     0 2px 6px rgba(100, 70, 40, 0.03);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transform: translateZ(0);
 }
 
 .pillarCard:hover {
   transform: translateY(-2px);
   box-shadow:
-    0 16px 36px -8px rgba(100, 70, 40, 0.1),
-    0 4px 10px rgba(100, 70, 40, 0.04);
+    0 12px 30px -6px rgba(100, 70, 40, 0.09),
+    0 3px 8px rgba(100, 70, 40, 0.04);
 }
 
 .cardHeader {
@@ -297,12 +285,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
-}
-
-.cardEmoji {
-  font-size: 1.25rem;
-  line-height: 1;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.16);
 }
 
 .stepNum {
@@ -329,23 +312,6 @@
 }
 
 /* ==========================================================================
-   Scroll-triggered Reveal Animations
-   ========================================================================== */
-.revealItem {
-  opacity: 0;
-  transform: translateY(36px);
-  transition:
-    opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-
-.revealItem.inView {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ==========================================================================
    Closing Action Section
    ========================================================================== */
 .closingSection {
@@ -356,6 +322,7 @@
   gap: 1.5rem;
   margin-top: 3.5rem;
   padding: 2rem 1rem 1rem;
+  contain: content;
 }
 
 .closingTitle {
@@ -379,24 +346,13 @@
   padding: 0.85rem 1.75rem !important;
 }
 
-/* Slow Graceful Entrance Keyframes */
-@keyframes slow-fade-in {
+/* Fast, smooth fade-in */
+@keyframes fast-fade-in {
   from {
     opacity: 0;
   }
   to {
     opacity: 1;
-  }
-}
-
-@keyframes slow-slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(22px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -408,7 +364,6 @@
     padding: 1.5rem 2rem 5rem;
   }
 
-  /* Desktop System Flow: Horizontal connected track */
   .systemTrack {
     flex-direction: row;
     justify-content: space-between;

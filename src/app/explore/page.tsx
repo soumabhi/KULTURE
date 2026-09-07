@@ -60,24 +60,6 @@ const SYSTEM_STEPS = [
 export default function ExplorePage() {
   const [activeModal, setActiveModal] = useState<ModalMode | null>(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add(styles.inView);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
-    );
-
-    const elements = document.querySelectorAll(`.${styles.revealItem}`);
-    elements.forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <main className={styles.container}>
       {/* Top Header Bar with Close Icon on Top Right */}
