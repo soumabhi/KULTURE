@@ -5,11 +5,11 @@ import LogoLockup from "@/components/logo-lockup";
 import NavHeader from "@/components/nav-header";
 
 const BOTTLE_PRELOADS = [
-  "/kb-1.png",
-  "/kb-2.png",
   "/kb-3.png",
+  "/kb-1.png",
   "/kb-4.png",
   "/kb-5.png",
+  "/kb-2.png",
 ] as const;
 
 export default function Home() {

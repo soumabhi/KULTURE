@@ -9,6 +9,7 @@
   pointer-events: none;
   animation: cover-in 0.55s ease 5.35s both;
   contain: layout style;
+  perspective: 1200px;
 }
 
 .scene {
@@ -18,7 +19,7 @@
   height: calc(var(--bottle-h) + 12rem);
   position: relative;
   overflow: visible;
-  contain: layout style;
+  transform-style: preserve-3d;
 }
 
 .bottle {
@@ -30,10 +31,8 @@
   margin: calc(var(--bottle-h) / -2) 0 0 calc(var(--bottle-w) / -2);
   background: transparent;
   transform-origin: 50% 100%;
-  transform: translateZ(0);
+  transform-style: preserve-3d;
   backface-visibility: hidden;
-  contain: layout style;
-  /* Cheap rectangular shadow — drop-shadow filter was the main GPU hitch */
   filter: none;
 }
 

@@ -4,29 +4,30 @@ import { useLayoutEffect, useRef } from "react";
 import styles from "./cover-flow.module.css";
 
 const BOTTLES = [
-  "/kb-1.png",
-  "/kb-2.png",
-  "/kb-3.png",
-  "/kb-4.png",
-  "/kb-5.png",
+  "/kb-3.png", // 1. Nexora (Blue / Yellow / White)
+  "/kb-1.png", // 2. Bitego (Red / White / Orange)
+  "/kb-4.png", // 3. Building The Future (Green / Yellow)
+  "/kb-5.png", // 4. Travora (Red / White)
+  "/kb-2.png", // 5. Lalchnd (Maroon / Gold)
 ] as const;
 
-/** Ten slots = two full passes of the five labels for a seamless loop. */
-const COUNT = 10;
-const STEP_SEC = 1.7;
+/** Twenty slots = four full passes of the five bottles for a tight, seamless orbit wheel (18° per bottle) */
+const COUNT = 20;
+const STEP_SEC = 1.85;
 const INTRO_MS = 5350;
 const CYCLE_SEC = COUNT * STEP_SEC;
+const ANGLE_STEP = 360 / COUNT; // 18 degrees per bottle
 
-/** ~5 visible at once with clear gaps like the Kultur fan reference. */
-const FADE_FULL = 1.35;
-const FADE_GONE = 2.7;
-const ANGLE_PER = 16;
-const ANGLE_MAX = 46;
-const RADIUS = 340;
+/** Compact circular orbit radius: bottle bases touch/align snugly */
+const RADIUS_Y = 112; // in % of bottle height
 const ASPECT = 268 / 743;
-const HIDE_ALPHA = 0.06;
+const RADIUS_X = RADIUS_Y / ASPECT; // ~310% of bottle width
+
+const ANGLE_FULL = 60; // fully visible across hero arc
+const ANGLE_GONE = 88; // submerged at bottom boundary
+const ANGLE_SPAN = ANGLE_GONE - ANGLE_FULL;
+const HIDE_ALPHA = 0.01;
 const DEG = Math.PI / 180;
-const FADE_SPAN = FADE_GONE - FADE_FULL;
 
 type CardState = {
   el: HTMLDivElement;
@@ -58,7 +59,7 @@ export default function CoverFlow() {
 
     const paint = (offset: number) => {
       for (let i = 0; i < COUNT; i++) {
-        applyLayout(state[i], slotAt(i, offset));
+        applyOrbitLayout(state[i], orbitAngleAt(i, offset));
       }
     };
 
@@ -88,35 +89,39 @@ export default function CoverFlow() {
   return (
     <div className={styles.stage} aria-hidden="true">
       <div ref={sceneRef} className={styles.scene}>
-        {Array.from({ length: COUNT }, (_, index) => (
-          <div key={index} className={styles.bottle}>
-            {/* Native img: next/image overhead is costly inside an rAF transform loop */}
-            <img
-              src={BOTTLES[index % BOTTLES.length]}
-              alt=""
-              width={268}
-              height={743}
-              className={styles.photo}
-              draggable={false}
-              decoding="async"
-              fetchPriority={index < 5 ? "high" : "low"}
-            />
-          </div>
-        ))}
+        {Array.from({ length: COUNT }, (_, index) => {
+          const src = BOTTLES[index % BOTTLES.length];
+          return (
+            <div key={`${index}-${src}`} className={styles.bottle}>
+              {/* Native img: next/image overhead is costly inside an rAF transform loop */}
+              <img
+                src={src}
+                alt=""
+                width={268}
+                height={743}
+                className={styles.photo}
+                draggable={false}
+                decoding="async"
+                fetchPriority={index < 5 ? "high" : "low"}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 }
 
-function slotAt(index: number, offset: number) {
-  let u = index / COUNT - offset;
-  u -= Math.floor(u + 0.5);
-  return u * COUNT;
+function orbitAngleAt(index: number, offset: number) {
+  let u = (index / COUNT - offset) % 1;
+  if (u > 0.5) u -= 1;
+  if (u < -0.5) u += 1;
+  return u * 360;
 }
 
-function applyLayout(card: CardState, slot: number) {
-  const abs = Math.abs(slot);
-  const opacity = edgeOpacity(abs);
+function applyOrbitLayout(card: CardState, angleDeg: number) {
+  const absAngle = Math.abs(angleDeg);
+  const opacity = orbitOpacity(absAngle);
 
   if (opacity < HIDE_ALPHA) {
     if (card.opacity !== 0) {
@@ -127,18 +132,21 @@ function applyLayout(card: CardState, slot: number) {
     return;
   }
 
-  const angle = Math.max(-ANGLE_MAX, Math.min(ANGLE_MAX, slot * ANGLE_PER));
-  const theta = angle * DEG;
-  const x = Math.sin(theta) * RADIUS;
-  const y = (1 - Math.cos(theta)) * RADIUS * ASPECT;
-  const z = (1000 - abs * 100) | 0;
+  const theta = angleDeg * DEG;
+  const sinTheta = Math.sin(theta);
+  const cosTheta = Math.cos(theta);
+
+  const x = sinTheta * RADIUS_X;
+  const y = (1 - cosTheta) * RADIUS_Y;
+  const z = (1000 + cosTheta * 100) | 0;
+
   const tx =
     "translate3d(" +
     x.toFixed(1) +
     "%," +
     y.toFixed(1) +
     "%,0) rotate(" +
-    angle.toFixed(1) +
+    angleDeg.toFixed(1) +
     "deg)";
 
   if (card.opacity === 0) {
@@ -158,8 +166,8 @@ function applyLayout(card: CardState, slot: number) {
   }
 }
 
-function edgeOpacity(abs: number) {
-  return smoother((FADE_GONE - abs) / FADE_SPAN);
+function orbitOpacity(absAngle: number) {
+  return smoother((ANGLE_GONE - absAngle) / ANGLE_SPAN);
 }
 
 function smoother(t: number) {
