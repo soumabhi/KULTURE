@@ -1,5 +1,6 @@
 .container {
-  min-height: 100dvh;
+  min-height: 100svh;
+  min-height: 100vh;
   width: 100%;
   background: radial-gradient(
     ellipse at center,
@@ -18,7 +19,6 @@
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
   -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
 }
 
 .container::-webkit-scrollbar {
@@ -71,19 +71,17 @@
   flex-direction: column;
 }
 
-/* Full Viewport Top-Centered Hero Section */
+/* Stable Hero Section with fixed gaps to prevent mobile address bar layout shifts */
 .heroSection {
-  min-height: calc(88dvh - 3rem);
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
   align-items: center;
   text-align: center;
-  padding: 1rem 0 2.5rem;
+  padding: 2rem 0 3rem;
+  gap: 1.35rem;
   box-sizing: border-box;
   max-width: 38rem;
   margin: 0 auto;
-  contain: content;
 }
 
 .headline {
@@ -343,7 +341,28 @@
 
 .partnerKeycap {
   font-size: 1rem !important;
-  padding: 0.85rem 1.75rem !important;
+  padding: 0.85rem 1.85rem !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+  background: #181512 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  transform: none !important;
+}
+
+.partnerKeycap::before {
+  display: none !important;
+}
+
+.partnerKeycap:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18) !important;
+  background: #000000 !important;
+}
+
+.partnerKeycap:active {
+  transform: translateY(1px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
 }
 
 /* Fast, smooth fade-in */
