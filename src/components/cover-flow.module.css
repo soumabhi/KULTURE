@@ -15,10 +15,10 @@
 }
 
 .scene {
-  --bottle-h: clamp(23rem, 50vh, 32rem);
+  --bottle-h: clamp(17.5rem, 38vh, 23.5rem);
   --bottle-w: calc(var(--bottle-h) * 268 / 743);
   width: 100vw;
-  height: calc(var(--bottle-h) + 12rem);
+  height: calc(var(--bottle-h) + 10rem);
   position: relative;
   overflow: visible;
   transform-style: preserve-3d;

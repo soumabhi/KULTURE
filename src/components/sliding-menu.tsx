@@ -6,6 +6,7 @@ import gsap from "gsap";
 import styles from "./sliding-menu.module.css";
 
 const MENU_LINKS = [
+  { label: "Why Kulture?", href: "/explore#why-kulture" },
   { label: "What we do?", href: "/explore#what-we-do" },
   { label: "Where we do?", href: "/explore#where-we-do" },
   { label: "Who we serve?", href: "/explore#who-we-serve" },
