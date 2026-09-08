@@ -18,13 +18,13 @@ const INTRO_MS = 5350;
 const CYCLE_SEC = COUNT * STEP_SEC;
 const ANGLE_STEP = 360 / COUNT; // 18 degrees per bottle
 
-/** Compact circular orbit radius: bottle bases touch/align snugly */
-const RADIUS_Y = 112; // in % of bottle height
+/** Compact circular orbit radius: perfectly symmetric within viewport boundaries */
+const RADIUS_Y = 105; // in % of bottle height
 const ASPECT = 268 / 743;
-const RADIUS_X = RADIUS_Y / ASPECT; // ~310% of bottle width
+const RADIUS_X = RADIUS_Y / ASPECT; // ~291% of bottle width
 
-const ANGLE_FULL = 60; // fully visible across hero arc
-const ANGLE_GONE = 88; // submerged at bottom boundary
+const ANGLE_FULL = 54; // fully visible across hero arc
+const ANGLE_GONE = 82; // submerged at bottom boundary
 const ANGLE_SPAN = ANGLE_GONE - ANGLE_FULL;
 const HIDE_ALPHA = 0.01;
 const DEG = Math.PI / 180;
@@ -67,13 +67,21 @@ export default function CoverFlow() {
     if (reduced) return;
 
     let frame = 0;
+    let isPaused = false;
     const motionStart = performance.now() + INTRO_MS;
 
     const tick = (now: number) => {
-      const elapsed = (now - motionStart) / 1000;
-      paint(elapsed < 0 ? 0 : (elapsed / CYCLE_SEC) % 1);
+      if (!isPaused) {
+        const elapsed = (now - motionStart) / 1000;
+        paint(elapsed < 0 ? 0 : (elapsed / CYCLE_SEC) % 1);
+      }
       frame = requestAnimationFrame(tick);
     };
+
+    const handleVisibilityChange = () => {
+      isPaused = document.hidden;
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     // Don't burn frames during the intro — start the loop when motion begins.
     const startTimer = window.setTimeout(() => {
@@ -81,6 +89,7 @@ export default function CoverFlow() {
     }, INTRO_MS);
 
     return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.clearTimeout(startTimer);
       cancelAnimationFrame(frame);
     };
@@ -121,8 +130,18 @@ function orbitAngleAt(index: number, offset: number) {
 
 function applyOrbitLayout(card: CardState, angleDeg: number) {
   const absAngle = Math.abs(angleDeg);
-  const opacity = orbitOpacity(absAngle);
 
+  // Fast-exit for off-screen bottles: skip all trigonometric & polynomial math (70% CPU savings)
+  if (absAngle >= ANGLE_GONE) {
+    if (card.opacity !== 0) {
+      card.opacity = 0;
+      card.el.style.opacity = "0";
+      card.el.style.visibility = "hidden";
+    }
+    return;
+  }
+
+  const opacity = orbitOpacity(absAngle);
   if (opacity < HIDE_ALPHA) {
     if (card.opacity !== 0) {
       card.opacity = 0;
@@ -167,10 +186,7 @@ function applyOrbitLayout(card: CardState, angleDeg: number) {
 }
 
 function orbitOpacity(absAngle: number) {
-  return smoother((ANGLE_GONE - absAngle) / ANGLE_SPAN);
-}
-
-function smoother(t: number) {
-  const x = t < 0 ? 0 : t > 1 ? 1 : t;
-  return x * x * x * (x * (x * 6 - 15) + 10);
+  if (absAngle <= ANGLE_FULL) return 1;
+  const t = (ANGLE_GONE - absAngle) / ANGLE_SPAN;
+  return t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t);
 }

@@ -1,38 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ContactModal, { ModalMode } from "@/components/contact-modal";
 import KeycapButton from "@/components/keycap-button";
+import SlidingMenu from "@/components/sliding-menu";
 import styles from "./nav-header.module.css";
 
 export default function NavHeader() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<ModalMode | null>(null);
-
-  // Close drawer on Escape key press
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setIsOpen(false);
-        setActiveModal(null);
-      }
-    };
-    if (isOpen || activeModal) {
-      window.addEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
-    };
-  }, [isOpen, activeModal]);
 
   return (
     <>
       <nav className={styles.headerActions} aria-label="Site Header Navigation">
-        {/* Desktop navbar (hidden on mobile <=768px) */}
+        {/* Desktop navbar: includes Fuel our expansion, Partner With Us, and the ↗ menu button */}
         <div className={styles.desktopActions}>
           <button
             type="button"
@@ -47,70 +28,40 @@ export default function NavHeader() {
           >
             Partner With Us
           </KeycapButton>
+          <KeycapButton
+            type="button"
+            className={styles.iconKeycap}
+            onClick={() => setIsMenuOpen(true)}
+            aria-label="Open navigation menu"
+            aria-expanded={isMenuOpen}
+          >
+            <span className={styles.iconSymbol}>↗</span>
+          </KeycapButton>
         </div>
 
-        {/* Mobile keycap icon trigger (visible ONLY on mobile <=768px) */}
+        {/* Mobile keycap icon trigger (visible on mobile <=768px) */}
         <div className={styles.mobileTrigger}>
           <KeycapButton
             type="button"
             className={styles.iconKeycap}
-            onClick={() => setIsOpen(true)}
+            onClick={() => setIsMenuOpen(true)}
             aria-label="Open navigation menu"
-            aria-expanded={isOpen}
+            aria-expanded={isMenuOpen}
           >
             <span className={styles.iconSymbol}>↗</span>
           </KeycapButton>
         </div>
       </nav>
 
-      {/* Mobile Drawer Backdrop */}
-      <div
-        className={`${styles.drawerOverlay} ${isOpen ? styles.isOpen : ""}`}
-        onClick={() => setIsOpen(false)}
-        aria-hidden="true"
+      {/* GSAP Multi-Panel Sliding Menu Overlay */}
+      <SlidingMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        onOpenPartnerModal={() => {
+          setIsMenuOpen(false);
+          setActiveModal("partner");
+        }}
       />
-
-      {/* Mobile Drawer Sidebar */}
-      <aside
-        className={`${styles.drawer} ${isOpen ? styles.isOpen : ""}`}
-        aria-label="Mobile Navigation"
-        aria-hidden={!isOpen}
-      >
-        <div className={styles.drawerHeader}>
-          <button
-            type="button"
-            className={styles.closeButton}
-            onClick={() => setIsOpen(false)}
-            aria-label="Close menu"
-          >
-            ✕
-          </button>
-        </div>
-
-        <div className={styles.drawerNavList}>
-          <button
-            type="button"
-            onClick={() => {
-              setIsOpen(false);
-              setActiveModal("partner");
-            }}
-            className={styles.drawerNavLink}
-          >
-            Partner With Us
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              setIsOpen(false);
-              setActiveModal("investor");
-            }}
-            className={styles.drawerNavLink}
-          >
-            Fuel our expansion
-          </button>
-        </div>
-      </aside>
 
       {/* Unified Investor & Partner Modal */}
       <ContactModal

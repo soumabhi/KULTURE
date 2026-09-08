@@ -319,8 +319,8 @@
   text-align: center;
   gap: 1.5rem;
   margin-top: 3.5rem;
-  padding: 2rem 1rem 1rem;
-  contain: content;
+  padding: 2rem 1rem 2rem;
+  overflow: visible;
 }
 
 .closingTitle {
@@ -337,32 +337,13 @@
   display: flex;
   justify-content: center;
   width: 100%;
+  padding: 0.5rem 1rem 1.5rem;
+  overflow: visible;
 }
 
 .partnerKeycap {
-  font-size: 1rem !important;
-  padding: 0.85rem 1.85rem !important;
-  border-radius: 9999px !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
-  background: #181512 !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  transform: none !important;
-}
-
-.partnerKeycap::before {
-  display: none !important;
-}
-
-.partnerKeycap:hover {
-  transform: translateY(-1px) !important;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18) !important;
-  background: #000000 !important;
-}
-
-.partnerKeycap:active {
-  transform: translateY(1px) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+  font-size: 15px !important;
+  padding: 0.75rem 1.45rem 0.88rem !important;
 }
 
 /* Fast, smooth fade-in */

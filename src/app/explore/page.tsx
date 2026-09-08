@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import AnimatedBottle from "@/components/animated-bottle";
 import ContactModal, { ModalMode } from "@/components/contact-modal";
@@ -71,7 +71,7 @@ export default function ExplorePage() {
 
       {/* Main Content Area */}
       <div className={styles.contentWrapper}>
-        {/* Full Viewport Top-Centered Hero Section (Equally Distributed) */}
+        {/* Full Viewport Top-Centered Hero Section */}
         <section className={styles.heroSection}>
           <h1 className={styles.headline}>
             Turn What People Hold
@@ -93,7 +93,7 @@ export default function ExplorePage() {
           </p>
         </section>
 
-        {/* The Kulture System Visual Flow Diagram (Clean SVGs, No Emojis) */}
+        {/* The Kulture System Visual Flow Diagram */}
         <section className={`${styles.systemSection} ${styles.revealItem}`} aria-label="The Kulture System Flow">
           <div className={styles.systemHeader}>
             <span className={styles.systemBadge}>HOW IT WORKS</span>

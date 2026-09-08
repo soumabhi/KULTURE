@@ -1,0 +1,215 @@
+.nav {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  padding: 1rem;
+  pointer-events: none;
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 0.65rem;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+.navBg {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 16, 15, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.navBorder {
+  border: solid 2px;
+  border-radius: 16px;
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.25);
+}
+
+.navPanel {
+  width: min(92vw, 440px);
+  max-width: 440px;
+  transform: translateX(105%);
+  position: relative;
+  pointer-events: auto;
+}
+
+/* ── Top Panel: Cream / White ── */
+.navTop {
+  height: auto;
+  background: #fffce1;
+  color: #0e100f;
+  border-color: #0e100f;
+  display: flex;
+  flex-direction: column;
+  padding: 1.1rem 1.4rem 1.1rem;
+  z-index: 3;
+}
+
+.navTopHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.navTopBrand {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7c7c6f;
+}
+
+.panelCloseBtn {
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: #0e100f;
+  pointer-events: auto;
+  position: relative;
+  z-index: 10;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.panelCloseBtn:hover {
+  background: rgba(0, 0, 0, 0.12);
+  transform: scale(1.08);
+}
+
+.panelCloseBtn:active {
+  transform: scale(0.96);
+}
+
+.navList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  margin: 0;
+  padding: 0.15rem 0;
+}
+
+.navItem {
+  overflow: hidden;
+  opacity: 0;
+}
+
+.navLink {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  color: #0e100f;
+  padding: 0.2rem 0;
+  font-size: clamp(1.15rem, 2.5vw, 1.35rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  transition: transform 0.15s ease;
+}
+
+/* Hover underline animation without changing color to green */
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0.15rem;
+  width: 100%;
+  height: 1.5px;
+  background-color: #0e100f;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navLink:hover {
+  color: #0e100f;
+  transform: translateX(4px);
+}
+
+.navLink:hover::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.navBrochure {
+  margin-top: 0.65rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid rgba(14, 16, 15, 0.12);
+  opacity: 0;
+}
+
+.brochureLink {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0e100f;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.brochureLink:hover {
+  opacity: 0.75;
+  transform: translateX(2px);
+}
+
+.brochureIcon {
+  display: inline-block;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+/* ── Bottom Panel: Black ── */
+.navBottom {
+  height: 72px;
+  background: #0e100f;
+  color: #bbbaa6;
+  border-color: #42433d;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem 1.6rem;
+  z-index: 1;
+}
+
+.navSocials {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-mono), monospace;
+}
+
+.navSocials a {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #bbbaa6;
+  text-decoration: none;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.navSocials a:hover {
+  color: #fffce1;
+  text-decoration: underline;
+}

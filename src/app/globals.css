@@ -128,12 +128,16 @@ body::-webkit-scrollbar {
 }
 
 .enter-water {
+  will-change: transform;
+  transform: translateZ(0);
   animation:
     rise-in 1.05s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both,
     rise-out 1.05s cubic-bezier(0.7, 0, 0.84, 0) 4.3s forwards;
 }
 
 .enter-side {
+  will-change: transform;
+  transform: translateZ(0);
   animation:
     rise-in 1.15s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both,
     rise-out 1.15s cubic-bezier(0.7, 0, 0.84, 0) 3.6s forwards;

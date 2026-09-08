@@ -2,20 +2,22 @@
   position: absolute;
   inset: 0;
   z-index: 5;
-  display: grid;
-  place-items: center;
-  padding: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   padding-top: calc(var(--logo-top) + var(--logo-size) + 0.75rem);
   pointer-events: none;
   animation: cover-in 0.55s ease 5.35s both;
   contain: layout style;
   perspective: 1200px;
+  overflow: hidden;
 }
 
 .scene {
-  --bottle-h: clamp(24rem, 52vh, 34rem);
+  --bottle-h: clamp(23rem, 50vh, 32rem);
   --bottle-w: calc(var(--bottle-h) * 268 / 743);
-  width: min(100vw, 96rem);
+  width: 100vw;
   height: calc(var(--bottle-h) + 12rem);
   position: relative;
   overflow: visible;
@@ -34,6 +36,8 @@
   transform-style: preserve-3d;
   backface-visibility: hidden;
   filter: none;
+  will-change: transform, opacity;
+  contain: layout style paint;
 }
 
 .photo {
