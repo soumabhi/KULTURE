@@ -22,25 +22,26 @@ export default function SmoothScrollProvider({
     gsap.registerPlugin(ScrollTrigger);
     gsap.defaults({ force3D: true, lazy: false });
 
-    // Initialize ultra-smooth, jitter-free Lenis
+    // Initialize butter-smooth, completely jitter-free Lenis
+    // wheelMultiplier: 0.5 cuts velocity in half so scrolling is calm, controlled, and near
+    // syncTouch: false lets touch devices run native 120Hz compositor tracking without jitter
     const lenis = new Lenis({
-      duration: 0.9,
+      duration: 0.95,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 0.72, // Calibrated distance per tick for near, comfortable, controlled scrolling
+      wheelMultiplier: 0.5, // 50% speed: calm, controlled, comfortable travel per tick
       touchMultiplier: 1.0,
-      syncTouch: false,
+      syncTouch: false, // Prevents mobile touch jitter; native hardware touch runs at 120fps
       virtualScroll: (data) => {
-        // Continuous soft damping: gently compress large wheel deltas without hard on/off cuts
-        const MAX_DELTA = 140;
+        // Continuous soft damping for extreme flicks (never abruptly cuts to 0)
+        const MAX_DELTA = 160;
         const absDelta = Math.abs(data.deltaY);
         if (absDelta > MAX_DELTA) {
-          // Logarithmic soft curve prevents runaway fling without causing stutter
           data.deltaY =
             Math.sign(data.deltaY) *
-            (MAX_DELTA + Math.log1p(absDelta - MAX_DELTA) * 12);
+            (MAX_DELTA + Math.log1p(absDelta - MAX_DELTA) * 14);
         }
         return true;
       },

@@ -69,3 +69,14 @@
   box-sizing: border-box;
   isolation: isolate;
 }
+
+@media (max-width: 768px) {
+  .slidesWrapper {
+    scroll-snap-type: y proximity;
+  }
+
+  .bodySection {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+  }
+}
