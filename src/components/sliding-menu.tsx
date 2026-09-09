@@ -241,9 +241,11 @@ export default function SlidingMenu({
         <div className={styles.navBrochure}>
           <a
             href="/brochure.pdf"
+            download="Kulture-Official-Media-Kit.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.brochureLink}
+            data-haptic="deep"
             onClick={onClose}
           >
             <span>Download Brochure</span>

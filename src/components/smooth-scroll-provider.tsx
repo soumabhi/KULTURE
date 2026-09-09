@@ -2,6 +2,7 @@
 
 import { useEffect, type ReactNode } from "react";
 import Lenis from "lenis";
+import "lenis/dist/lenis.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -22,37 +23,17 @@ export default function SmoothScrollProvider({
     gsap.registerPlugin(ScrollTrigger);
     gsap.defaults({ lazy: false });
 
-    // Detect mobile touch screen environment
-    const isMobile =
-      window.innerWidth <= 768 ||
-      window.matchMedia("(pointer: coarse)").matches ||
-      /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-
-    // Initialize ultra-smooth, jitter-free Lenis
-    // Uses Lenis's native syncTouch engine for 120fps hardware-fluid touch and wheel
+    // Initialize responsive, non-sluggish Lenis with tight touch control
     const lenis = new Lenis({
-      lerp: 0.012, // Infinite cloud-soft cinematic damping for wheel scrolling
+      lerp: 0.08, // Responsive, buttery smooth deceleration without sluggish lag
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 0.75, // Effortless, floating wheel scroll
-      syncTouch: true, // Native Lenis touch engine: 1:1 direct finger tracking with zero jitter
-      syncTouchLerp: 0.012, // Ultra-deep, liquid-velvet momentum coast on flick release
-      touchInertiaExponent: 1.9, // Sustained, gliding flick momentum
-      touchMultiplier: 1.2, // Completely effortless, responsive finger tracking
-      virtualScroll: (data) => {
-        // Softly cap rapid wheel spinning on desktop/laptop
-        if (data.event && data.event.type && data.event.type.includes("wheel")) {
-          const absDelta = Math.abs(data.deltaY);
-          const MAX_WHEEL_IMPULSE = 85;
-          if (absDelta > MAX_WHEEL_IMPULSE) {
-            data.deltaY =
-              Math.sign(data.deltaY) *
-              (MAX_WHEEL_IMPULSE + Math.log1p(absDelta - MAX_WHEEL_IMPULSE) * 7);
-          }
-        }
-        return true;
-      },
+      wheelMultiplier: 0.9, // Natural, controlled wheel response
+      syncTouch: true, // Native Lenis touch sync active
+      syncTouchLerp: 0.08, // Snappy touch deceleration (replaces the sluggish 0.012)
+      touchInertiaExponent: 1.15, // Tightly capped flick momentum (prevents runaway scrolling)
+      touchMultiplier: 0.9, // Controlled finger resistance
     });
 
     // Synchronize Lenis scroll position with GSAP ScrollTrigger on every frame
