@@ -31,11 +31,11 @@ export default function SmoothScrollProvider({
     // Initialize ultra-smooth, continuous Lenis
     // Uses continuous exponential lerp damping for buttery smooth glide on both wheel and touch
     const lenis = new Lenis({
-      lerp: 0.075, // Softer continuous exponential damping (silky, cushioned glide)
+      lerp: 0.06, // Soft, continuous exponential damping (ultra-smooth, floating glide)
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 0.45, // Responsive yet calm wheel scroll
+      wheelMultiplier: 0.5, // Natural, flowing wheel scroll
       syncTouch: false, // Handled with dedicated continuous damping below
       virtualScroll: (data) => {
         // Suppress Lenis's internal touch handler so it doesn't conflict with our smooth touch controller
@@ -45,7 +45,7 @@ export default function SmoothScrollProvider({
         }
         // Cap single mouse wheel impulses smoothly on desktop/laptop
         const absDelta = Math.abs(data.deltaY);
-        const MAX_WHEEL_IMPULSE = 80;
+        const MAX_WHEEL_IMPULSE = 85;
         if (absDelta > MAX_WHEEL_IMPULSE) {
           data.deltaY =
             Math.sign(data.deltaY) *
@@ -66,16 +66,15 @@ export default function SmoothScrollProvider({
     gsap.ticker.lagSmoothing(0);
 
     // ── MOBILE TOUCH CONTROLLER ──
-    // Continuous exponential damping: silky smooth, responsive, and bounded
+    // Zero-lag direct finger anchoring + liquid-smooth momentum coast
     let touchStartY = 0;
     let touchStartX = 0;
     let lastTouchY = 0;
     let lastMoveTime = 0;
-    let releaseVelocity = 0;
-    let filteredDeltaY = 0;
+    let initialScrollY = 0;
     let isTouchActive = false;
     let isScrollGesture = false;
-    let touchTargetY = 0;
+    let velocityQueue: { dy: number; dt: number }[] = [];
 
     const onTouchStart = (e: TouchEvent) => {
       if (e.touches.length !== 1) return;
@@ -91,13 +90,12 @@ export default function SmoothScrollProvider({
       touchStartX = touch.clientX;
       lastTouchY = touch.clientY;
       lastMoveTime = now;
-      releaseVelocity = 0;
-      filteredDeltaY = 0;
+      velocityQueue = [];
       isTouchActive = true;
       isScrollGesture = false;
 
-      // Anchor to current smooth scroll position
-      touchTargetY = lenis.animatedScroll;
+      // Anchor to current instantaneous scroll position (instantly catches coasting)
+      initialScrollY = lenis.animatedScroll;
     };
 
     const onTouchMove = (e: TouchEvent) => {
@@ -108,19 +106,19 @@ export default function SmoothScrollProvider({
       const diffX = touch.clientX - touchStartX;
       const diffY = touch.clientY - touchStartY;
       const stepDeltaY = lastTouchY - touch.clientY; // positive = dragged upward -> scroll downward
-      const dt = Math.max(8, now - lastMoveTime);
+      const dt = Math.max(6, now - lastMoveTime);
       lastMoveTime = now;
       lastTouchY = touch.clientY;
 
-      // Calculate instantaneous velocity in px/ms
-      releaseVelocity = stepDeltaY / dt;
+      // Rolling window of last 3 samples for noise-free velocity
+      velocityQueue.push({ dy: stepDeltaY, dt });
+      if (velocityQueue.length > 3) velocityQueue.shift();
 
       // Differentiate vertical scroll gesture from taps or horizontal swipes
       if (!isScrollGesture) {
-        if (Math.abs(diffY) > 6 && Math.abs(diffY) >= Math.abs(diffX)) {
+        if (Math.abs(diffY) > 5 && Math.abs(diffY) >= Math.abs(diffX)) {
           isScrollGesture = true;
-          filteredDeltaY = stepDeltaY;
-        } else if (Math.abs(diffX) > 12 && Math.abs(diffX) > Math.abs(diffY)) {
+        } else if (Math.abs(diffX) > 10 && Math.abs(diffX) > Math.abs(diffY)) {
           // Horizontal swipe (let sliders or browser handle)
           isTouchActive = false;
           return;
@@ -133,25 +131,16 @@ export default function SmoothScrollProvider({
           e.preventDefault();
         }
 
-        // 2-sample low-pass filter eliminates touch sensor micro-jitter
-        filteredDeltaY = filteredDeltaY * 0.25 + stepDeltaY * 0.75;
-
-        // 1:1 natural touch response: content moves freely with finger without restriction
-        touchTargetY += filteredDeltaY;
-
-        // Soft lead ceiling only to prevent extreme runaway (generous 1.2x viewport)
-        const MAX_LEAD = window.innerHeight * 1.1;
-        touchTargetY = Math.max(
-          lenis.animatedScroll - MAX_LEAD,
-          Math.min(lenis.animatedScroll + MAX_LEAD, touchTargetY)
+        // Direct anchor tracking: content stays glued to finger without rubber-band drift
+        const totalFingerDelta = touchStartY - touch.clientY;
+        const targetY = Math.max(
+          0,
+          Math.min(lenis.limit, initialScrollY + totalFingerDelta)
         );
 
-        // Clamp within document bounds
-        touchTargetY = Math.max(0, Math.min(lenis.limit, touchTargetY));
-
-        // Ultra-buttery continuous exponential glide
-        lenis.scrollTo(touchTargetY, {
-          lerp: 0.075,
+        // Smooth, cushioned finger following with zero lag
+        lenis.scrollTo(targetY, {
+          lerp: 0.14,
           lock: false,
         });
       }
@@ -163,29 +152,35 @@ export default function SmoothScrollProvider({
 
       if (!isScrollGesture) return;
 
-      // If finger was held stationary before lifting, flick velocity decays
-      const timeSinceLastMove = performance.now() - lastMoveTime;
-      const decay = Math.max(0, 1 - timeSinceLastMove / 140);
-      const effectiveVelocity = releaseVelocity * decay;
+      // Calculate weighted rolling average release velocity
+      let totalDy = 0;
+      let totalDt = 0;
+      for (const sample of velocityQueue) {
+        totalDy += sample.dy;
+        totalDt += sample.dt;
+      }
+      const rawVelocity = totalDt > 0 ? totalDy / totalDt : 0; // px/ms
 
-      // Generous, silky flick coast (up to 520px) for free, unrestricted momentum
+      // Decay velocity if finger was held stationary before lifting
+      const timeSinceLastMove = performance.now() - lastMoveTime;
+      const decay = Math.max(0, 1 - timeSinceLastMove / 120);
+      const effectiveVelocity = rawVelocity * decay;
+
+      // Liquid momentum coast: scales naturally with flick speed (up to 600px)
       const absVel = Math.abs(effectiveVelocity);
       if (absVel > 0.12) {
         const flickBonus =
           Math.sign(effectiveVelocity) *
-          Math.min(520, Math.pow(absVel * 110, 0.86));
-        touchTargetY += flickBonus;
+          Math.min(620, Math.pow(absVel * 130, 0.88));
 
-        const MAX_LEAD = window.innerHeight * 1.25;
-        touchTargetY = Math.max(
-          lenis.animatedScroll - MAX_LEAD,
-          Math.min(lenis.animatedScroll + MAX_LEAD, touchTargetY)
+        const coastTarget = Math.max(
+          0,
+          Math.min(lenis.limit, lenis.animatedScroll + flickBonus)
         );
-        touchTargetY = Math.max(0, Math.min(lenis.limit, touchTargetY));
 
-        // Luxurious, feather-soft deceleration coast (lerp: 0.05)
-        lenis.scrollTo(touchTargetY, {
-          lerp: 0.05,
+        // Ultra-luxurious, feather-soft deceleration coast (lerp: 0.042)
+        lenis.scrollTo(coastTarget, {
+          lerp: 0.042,
           lock: false,
         });
       }
