@@ -23,30 +23,15 @@ export default function SmoothScrollProvider({
     gsap.registerPlugin(ScrollTrigger);
     gsap.defaults({ lazy: false });
 
-    // Initialize responsive, non-sluggish Lenis with tight touch control
-    const lenis = new Lenis({
-      lerp: 0.08, // Responsive, buttery smooth deceleration without sluggish lag
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      smoothWheel: true,
-      wheelMultiplier: 0.9, // Natural, controlled wheel response
-      syncTouch: true, // Native Lenis touch sync active
-      syncTouchLerp: 0.08, // Snappy touch deceleration (replaces the sluggish 0.012)
-      touchInertiaExponent: 1.15, // Tightly capped flick momentum (prevents runaway scrolling)
-      touchMultiplier: 0.9, // Controlled finger resistance
-    });
+    // Detect mobile / touch devices
+    const isMobile =
+      window.innerWidth <= 768 ||
+      window.matchMedia("(pointer: coarse)").matches ||
+      /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 
-    // Synchronize Lenis scroll position with GSAP ScrollTrigger on every frame
-    lenis.on("scroll", ScrollTrigger.update);
+    // Anchor navigation handler (#why-kulture, #what-we-do, etc.)
+    let lenisInstance: Lenis | null = null;
 
-    const onTick = (time: number) => {
-      lenis.raf(time * 1000);
-    };
-
-    gsap.ticker.add(onTick);
-    gsap.ticker.lagSmoothing(0);
-
-    // Smooth anchor navigation (#why-kulture, #what-we-do, #where-we-do, etc.)
     const handleAnchorClick = (e: MouseEvent) => {
       const target = (e.target as HTMLElement)?.closest<HTMLAnchorElement>(
         "a[href*='#']"
@@ -59,19 +44,55 @@ export default function SmoothScrollProvider({
       const hash = href.startsWith("#")
         ? href
         : href.includes("#")
-        ? `#${href.split("#")[1]}`
-        : null;
+          ? `#${href.split("#")[1]}`
+          : null;
 
       if (hash && hash !== "#") {
         const targetEl = document.querySelector<HTMLElement>(hash);
         if (targetEl && targetEl instanceof HTMLElement) {
           e.preventDefault();
-          lenis.scrollTo(targetEl, { offset: -24, duration: 0.9 });
+          if (lenisInstance) {
+            lenisInstance.scrollTo(targetEl, { offset: -24, duration: 0.9 });
+          } else {
+            const top = targetEl.getBoundingClientRect().top + window.scrollY - 24;
+            window.scrollTo({ top, behavior: "smooth" });
+          }
         }
       }
     };
 
     document.addEventListener("click", handleAnchorClick, { capture: true });
+
+    // On mobile / touch devices: 100% native browser scrolling (identical to /explore page)
+    if (isMobile) {
+      ScrollTrigger.refresh();
+      return () => {
+        document.removeEventListener("click", handleAnchorClick, {
+          capture: true,
+        });
+      };
+    }
+
+    // On desktop: responsive, smooth Lenis (syncTouch: false delegates touch to native)
+    const lenis = new Lenis({
+      lerp: 0.08,
+      orientation: "vertical",
+      gestureOrientation: "vertical",
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
+      syncTouch: false, // 100% native touch physics (like /explore)
+    });
+    lenisInstance = lenis;
+
+    // Synchronize Lenis scroll position with GSAP ScrollTrigger
+    lenis.on("scroll", ScrollTrigger.update);
+
+    const onTick = (time: number) => {
+      lenis.raf(time * 1000);
+    };
+
+    gsap.ticker.add(onTick);
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
       document.removeEventListener("click", handleAnchorClick, {
