@@ -31,15 +31,15 @@ export default function SmoothScrollProvider({
     // Initialize ultra-smooth, jitter-free Lenis
     // Uses Lenis's native syncTouch engine for 120fps hardware-fluid touch and wheel
     const lenis = new Lenis({
-      lerp: 0.035, // Deep, floating exponential damping for wheel scrolling
+      lerp: 0.025, // Ultimate cloud-soft exponential damping for wheel scrolling
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 0.55, // Fluid, effortless wheel scroll
+      wheelMultiplier: 0.6, // Effortless, floating wheel scroll
       syncTouch: true, // Native Lenis touch engine: 1:1 direct finger tracking with zero jitter
-      syncTouchLerp: 0.032, // Deep, liquid-velvet momentum coast on flick release
-      touchInertiaExponent: 1.55, // Organic, gliding flick momentum
-      touchMultiplier: 1.08, // Completely natural, effortless finger tracking
+      syncTouchLerp: 0.022, // Ultimate liquid-velvet momentum coast on flick release
+      touchInertiaExponent: 1.65, // Rich, sustained gliding momentum
+      touchMultiplier: 1.1, // Completely effortless, responsive finger tracking
       virtualScroll: (data) => {
         // Softly cap rapid wheel spinning on desktop/laptop
         if (data.event && data.event.type && data.event.type.includes("wheel")) {
