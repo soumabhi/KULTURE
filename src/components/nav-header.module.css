@@ -1,10 +1,11 @@
 .headerActions {
-  position: absolute;
-  z-index: 20;
+  position: fixed;
+  z-index: 90;
   top: calc(var(--logo-top) + var(--logo-size) / 2 - 1.65rem);
   right: var(--page-gutter);
   transform: translateY(-50%);
   animation: header-in 0.5s ease 5.35s both;
+  pointer-events: auto;
 }
 
 @keyframes header-in {
@@ -226,3 +227,4 @@
   align-items: center;
   justify-content: center;
 }
+

@@ -68,30 +68,86 @@ export default function CoverFlow() {
 
     let frame = 0;
     let isPaused = false;
+    let isVisible = true;
+    let isScrolledPast = false;
     const motionStart = performance.now() + INTRO_MS;
 
     const tick = (now: number) => {
-      if (!isPaused) {
+      if (!isPaused && isVisible && !isScrolledPast) {
         const elapsed = (now - motionStart) / 1000;
         paint(elapsed < 0 ? 0 : (elapsed / CYCLE_SEC) % 1);
+        frame = requestAnimationFrame(tick);
+      } else {
+        frame = 0;
       }
-      frame = requestAnimationFrame(tick);
+    };
+
+    const startLoop = () => {
+      if (!frame && !isPaused && isVisible && !isScrolledPast) {
+        frame = requestAnimationFrame(tick);
+      }
+    };
+
+    const stopLoop = () => {
+      if (frame) {
+        cancelAnimationFrame(frame);
+        frame = 0;
+      }
     };
 
     const handleVisibilityChange = () => {
       isPaused = document.hidden;
+      if (isPaused) {
+        stopLoop();
+      } else {
+        startLoop();
+      }
     };
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
+    // Watch scroll position: cancel rAF loop immediately when user scrolls past hero
+    const handleScroll = () => {
+      const past = window.scrollY > window.innerHeight * 0.85;
+      if (past !== isScrolledPast) {
+        isScrolledPast = past;
+        if (past) {
+          stopLoop();
+        } else {
+          startLoop();
+        }
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+    handleScroll();
+
+    // Pause loop if CoverFlow is completely unrendered
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        isVisible = entry.isIntersecting;
+        if (!isVisible) {
+          stopLoop();
+        } else {
+          startLoop();
+        }
+      },
+      { threshold: 0.02 }
+    );
+    observer.observe(scene);
+
     // Don't burn frames during the intro — start the loop when motion begins.
     const startTimer = window.setTimeout(() => {
-      frame = requestAnimationFrame(tick);
+      startLoop();
     }, INTRO_MS);
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+      observer.disconnect();
       window.clearTimeout(startTimer);
-      cancelAnimationFrame(frame);
+      stopLoop();
     };
   }, []);
 
@@ -111,6 +167,7 @@ export default function CoverFlow() {
                 className={styles.photo}
                 draggable={false}
                 decoding="async"
+                loading="eager"
                 fetchPriority={index < 5 ? "high" : "low"}
               />
             </div>

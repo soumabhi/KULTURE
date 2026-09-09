@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { triggerHaptic } from "@/lib/haptics";
-import styles from "./expansion-modal.module.css";
+import styles from "./contact-modal.module.css";
 
 export type ModalMode = "investor" | "partner";
 
@@ -32,6 +33,11 @@ const MODAL_CONFIG = {
 
 export default function ContactModal({ mode, onClose }: ContactModalProps) {
   const [copied, setCopied] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleClose = () => {
     setCopied(false);
@@ -54,7 +60,7 @@ export default function ContactModal({ mode, onClose }: ContactModalProps) {
     };
   }, [mode]);
 
-  if (!mode) return null;
+  if (!mode || !mounted) return null;
 
   const config = MODAL_CONFIG[mode];
 
@@ -76,7 +82,7 @@ export default function ContactModal({ mode, onClose }: ContactModalProps) {
     }
   };
 
-  return (
+  const modalContent = (
     <div
       className={styles.backdrop}
       onClick={handleClose}
@@ -149,4 +155,6 @@ export default function ContactModal({ mode, onClose }: ContactModalProps) {
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }

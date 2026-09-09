@@ -12,20 +12,25 @@
 
 .title {
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
-  font-size: clamp(1.9rem, 4.4vw, 3.4rem);
-  font-weight: 600;
-  line-height: 1.18;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.15;
   letter-spacing: -0.035em;
-  color: #211c18;
-  background: linear-gradient(180deg, #1a1613 0%, #3e332a 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #181512;
   margin: 0;
   padding: 0 0.5rem;
 }
 
 .line {
   display: block;
+}
+
+.titleHighlight {
+  background: linear-gradient(135deg, #181512 0%, #059669 60%, #047857 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #0b7a48;
 }
 
 .subtitle {

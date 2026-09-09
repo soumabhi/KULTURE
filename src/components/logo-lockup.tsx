@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { triggerHaptic } from "@/lib/haptics";
 
 const BASE_RATE = 1;
 const BOOST = 16;
@@ -72,6 +73,7 @@ export default function LogoLockup() {
 
   function spinUp() {
     if (!hot) return;
+    triggerHaptic("logo");
     rateRef.current = Math.min(MAX_RATE, rateRef.current + BOOST);
     applyRate(rateRef.current);
     if (!rafRef.current) {
@@ -83,7 +85,7 @@ export default function LogoLockup() {
   return (
     <div
       ref={lockupRef}
-      className={`lockup lockup-to-logo${hot ? " is-hot" : ""}`}
+      className={`lockup${hot ? " is-hot" : " lockup-to-logo"}`}
       role="button"
       tabIndex={hot ? 0 : -1}
       aria-label="Kulture"
@@ -96,7 +98,7 @@ export default function LogoLockup() {
         }
       }}
     >
-      <div className="chakra-travel">
+      <div className={hot ? "" : "chakra-travel"}>
         <Image
           ref={chakraRef}
           src="/konarkc.png"
@@ -105,7 +107,7 @@ export default function LogoLockup() {
           height={1247}
           priority
           draggable={false}
-          className="chakra-spin mx-auto block h-auto w-[90%] select-none"
+          className={`${hot ? "chakra-spin-idle" : "chakra-spin"} mx-auto block h-auto w-[90%] select-none`}
         />
       </div>
       <div className="pointer-events-none absolute top-1/2 left-1/2 w-[118%] max-w-none -translate-x-1/2 -translate-y-1/2">
@@ -116,7 +118,7 @@ export default function LogoLockup() {
           height={785}
           priority
           draggable={false}
-          className="kultur-pop h-auto w-full select-none"
+          className={`${hot ? "" : "kultur-pop"} h-auto w-full select-none`}
         />
       </div>
     </div>

@@ -3,6 +3,17 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --page-gutter: calc(100vw / 6);
+  --logo-size: 5.75rem;
+  --logo-top: 0.9rem;
+
+  /* ── Stacking Context Hierarchy ── */
+  --z-hero: 1;
+  --z-content: 10;
+  --z-floating-menu: 90;
+  --z-sliding-menu: 200;
+  --z-modal: 300;
+  --z-toast: 400;
 }
 
 @theme inline {
@@ -21,6 +32,14 @@
   }
 }
 
+@media (max-width: 640px) {
+  :root {
+    --page-gutter: 1.25rem;
+    --logo-size: 4.5rem;
+    --logo-top: 0.85rem;
+  }
+}
+
 /* Universal Scrollbar Hide */
 *,
 *::before,
@@ -36,13 +55,43 @@
   background: transparent !important;
 }
 
-html,
+html {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
 body {
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Lenis Smooth Scrolling Optimizations */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }
 
 html::-webkit-scrollbar,
@@ -53,24 +102,16 @@ body::-webkit-scrollbar {
 }
 
 .stage {
-  --page-gutter: calc(100vw / 6);
-  --logo-size: 5.75rem;
-  --logo-top: 0.9rem;
   background:
     radial-gradient(ellipse at center, #fbf6ee 0%, #f3e6d4 62%, #e8d5be 100%);
-}
-
-@media (max-width: 640px) {
-  .stage {
-    --page-gutter: 1.25rem;
-    --logo-size: 4.5rem;
-    --logo-top: 0.85rem;
-  }
+  contain: layout style;
 }
 
 .chakra-spin {
   transform-origin: center;
   will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   animation:
     chakra-burst 2.4s cubic-bezier(0.05, 0.75, 0.15, 1) forwards,
     chakra-spin 12s linear 2.4s infinite;
@@ -80,6 +121,7 @@ body::-webkit-scrollbar {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(1800deg);
   }
@@ -89,6 +131,7 @@ body::-webkit-scrollbar {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -97,6 +140,8 @@ body::-webkit-scrollbar {
 .kultur-pop {
   transform-origin: center;
   will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   animation: kultur-pop 1.55s cubic-bezier(0.22, 1.35, 0.36, 1) 0.45s both;
 }
 
@@ -104,6 +149,7 @@ body::-webkit-scrollbar {
   from {
     transform: scale(0);
   }
+
   to {
     transform: scale(1);
   }
@@ -111,25 +157,29 @@ body::-webkit-scrollbar {
 
 @keyframes rise-in {
   from {
-    transform: translateY(110%);
+    transform: translate3d(0, 110%, 0);
   }
+
   to {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
 @keyframes rise-out {
   from {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
+
   to {
-    transform: translateY(110%);
+    transform: translate3d(0, 110%, 0);
   }
 }
 
 .enter-water {
   will-change: transform;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   animation:
     rise-in 1.05s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both,
     rise-out 1.05s cubic-bezier(0.7, 0, 0.84, 0) 4.3s forwards;
@@ -137,30 +187,44 @@ body::-webkit-scrollbar {
 
 .enter-side {
   will-change: transform;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   animation:
     rise-in 1.15s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both,
     rise-out 1.15s cubic-bezier(0.7, 0, 0.84, 0) 3.6s forwards;
 }
 
 @media (max-width: 768px) {
+
   .enter-water,
   .enter-side {
     display: none !important;
   }
 }
 
+.chakra-spin-idle {
+  transform-origin: center;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  animation: chakra-spin 12s linear infinite;
+}
+
 .lockup {
   --lockup-size: min(62vmin, 30rem);
   --logo-inset: var(--page-gutter);
-  position: absolute;
-  z-index: 10;
-  top: 50%;
-  left: 50%;
+  position: fixed;
+  z-index: 90;
+  top: 0;
+  left: 0;
   width: var(--lockup-size);
-  transform: translate(-50%, -50%);
+  height: var(--lockup-size);
+  transform: translate3d(calc(50vw - var(--lockup-size) / 2), calc(50dvh - var(--lockup-size) / 2), 0) scale(1);
   transform-origin: 0 0;
-  will-change: transform, top, left;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .lockup-to-logo {
@@ -169,25 +233,38 @@ body::-webkit-scrollbar {
 
 .lockup.is-hot {
   cursor: pointer;
+  transform: translate3d(var(--logo-inset), var(--logo-top), 0) scale(calc(var(--logo-size) / var(--lockup-size)));
+  animation: none;
+}
+
+.lockup.is-hot .chakra-travel {
+  animation: none;
+  transform: none;
+}
+
+.lockup.is-hot .kultur-pop {
+  animation: none;
+  transform: scale(1);
+}
+
+.lockup.is-hot .chakra-spin {
+  animation: chakra-spin 12s linear infinite;
 }
 
 @keyframes lockup-to-logo {
   from {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1);
-    transform-origin: 0 0;
+    transform: translate3d(calc(50vw - var(--lockup-size) / 2), calc(50dvh - var(--lockup-size) / 2), 0) scale(1);
   }
+
   to {
-    top: var(--logo-top);
-    left: var(--logo-inset);
-    transform: translate(0, 0) scale(calc(var(--logo-size) / var(--lockup-size)));
-    transform-origin: 0 0;
+    transform: translate3d(var(--logo-inset), var(--logo-top), 0) scale(calc(var(--logo-size) / var(--lockup-size)));
   }
 }
 
 .chakra-travel {
   will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   animation: chakra-travel 1.05s cubic-bezier(0.22, 0.7, 0.28, 1) 4.3s forwards;
 }
 
@@ -195,6 +272,7 @@ body::-webkit-scrollbar {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(720deg);
   }
@@ -205,6 +283,7 @@ body::-webkit-scrollbar {
     opacity: 0;
     transform: translateY(-8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -212,6 +291,7 @@ body::-webkit-scrollbar {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .chakra-spin,
   .kultur-pop,
   .enter-water,
@@ -222,9 +302,6 @@ body::-webkit-scrollbar {
 
   .lockup-to-logo {
     animation: none;
-    top: var(--logo-top);
-    left: var(--logo-inset);
-    transform-origin: 0 0;
-    transform: translate(0, 0) scale(calc(var(--logo-size) / var(--lockup-size)));
+    transform: translate3d(var(--logo-inset), var(--logo-top), 0) scale(calc(var(--logo-size) / var(--lockup-size)));
   }
 }

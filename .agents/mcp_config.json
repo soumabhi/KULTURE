@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "gsap-master": {
+      "command": "npx",
+      "args": ["-y", "bruzethegreat-gsap-master-mcp-server@latest"]
+    }
+  }
+}

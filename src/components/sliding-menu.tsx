@@ -1,18 +1,16 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Link from "next/link";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./sliding-menu.module.css";
 
-const MENU_LINKS = [
-  { label: "Why Kulture?", href: "/explore#why-kulture" },
-  { label: "What we do?", href: "/explore#what-we-do" },
-  { label: "Where we do?", href: "/explore#where-we-do" },
-  { label: "Who we serve?", href: "/explore#who-we-serve" },
-  { label: "How we do?", href: "/explore#how-we-do" },
-  { label: "Who we are?", href: "/explore#who-we-are" },
-  { label: "Career", href: "/explore#career" },
+const MENU_ITEMS = [
+  { label: "Why Kulture?", targetId: "why-kulture" },
+  { label: "What we do?", targetId: "what-we-do" },
+  { label: "Where we do?", targetId: "where-we-do" },
+  { label: "Who we serve?", targetId: "who-we-serve" },
+  { label: "Who we are?", targetId: "who-we-are" },
 ];
 
 type SlidingMenuProps = {
@@ -205,15 +203,37 @@ export default function SlidingMenu({
         </div>
 
         <ul className={styles.navList}>
-          {MENU_LINKS.map((item) => (
+          {MENU_ITEMS.map((item) => (
             <li key={item.label} className={styles.navItem}>
-              <Link
-                href={item.href}
+              <button
+                type="button"
                 className={styles.navLink}
-                onClick={onClose}
+                onClick={() => {
+                  onClose();
+                  if (typeof window === "undefined") return;
+
+                  if (window.location.pathname !== "/") {
+                    window.location.href = `/?section=${item.targetId}`;
+                    return;
+                  }
+
+                  document.body.style.overflow = "";
+                  setTimeout(() => {
+                    const target = document.getElementById(item.targetId);
+                    if (target) {
+                      const rect = target.getBoundingClientRect();
+                      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                      const targetY = rect.top + scrollTop;
+                      window.scrollTo({
+                        top: targetY,
+                        behavior: "smooth",
+                      });
+                    }
+                  }, 50);
+                }}
               >
                 {item.label}
-              </Link>
+              </button>
             </li>
           ))}
         </ul>
@@ -232,7 +252,8 @@ export default function SlidingMenu({
         </div>
       </div>
 
-      {/* Bottom panel — black */}
+      {/* Bottom panel — black (Temporarily commented out for later embedding) */}
+      {/*
       <div className={`${styles.navBottom} ${styles.navBorder} ${styles.navPanel}`} id="navBottom">
         <ul className={styles.navSocials}>
           <li>
@@ -264,6 +285,7 @@ export default function SlidingMenu({
           </li>
         </ul>
       </div>
+      */}
     </div>
   );
 }

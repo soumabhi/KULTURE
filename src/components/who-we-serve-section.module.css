@@ -1,0 +1,273 @@
+.section {
+  position: relative;
+  width: 100%;
+  background: transparent;
+  color: #181512;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  padding: clamp(3.5rem, 6vw, 6rem) 1.5rem clamp(4rem, 6.5vw, 6.5rem);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 72rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+/* ── Section Header ── */
+.header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.pillBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: 9999px;
+  background: rgba(220, 160, 40, 0.12);
+  border: 1px solid rgba(200, 145, 30, 0.35);
+  color: #925805;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: clamp(2.2rem, 4.8vw, 3.8rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  color: #161412;
+  margin: 0;
+}
+
+.titleHighlight {
+  color: #0b7a48;
+}
+
+.subtitle {
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  line-height: 1.6;
+  color: #5a4f44;
+  max-width: 44rem;
+  margin: 0 auto;
+  font-weight: 450;
+}
+
+/* ── 3 Stakeholder Columns ── */
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .cardsGrid {
+    grid-template-columns: 1fr;
+    max-width: 32rem;
+    margin: 0 auto;
+  }
+}
+
+.card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 2.2rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow:
+    0 4px 20px rgba(80, 50, 20, 0.06),
+    0 1px 3px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(225, 210, 190, 0.8);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 40px rgba(80, 50, 20, 0.12),
+    0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.heroCard {
+  background: #111413;
+  color: #ffffff;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+}
+
+.heroCard:hover {
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.6);
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.iconWrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(16, 185, 129, 0.1);
+  color: #0b7a48;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.heroIconWrap {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.35);
+}
+
+.stakeholderTag {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #7c7267;
+  text-transform: uppercase;
+}
+
+.heroTag {
+  color: #9ca3af;
+}
+
+.cardTitle {
+  font-size: 1.35rem;
+  font-weight: 750;
+  color: #161412;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.heroTitle {
+  color: #ffffff;
+}
+
+.statusPill {
+  display: inline-block;
+  width: fit-content;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  background: rgba(34, 197, 94, 0.1);
+  color: #0b7a48;
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.heroStatusPill {
+  background: rgba(34, 197, 94, 0.18);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  padding: 1rem 0;
+  border-top: 1px solid rgba(220, 205, 185, 0.6);
+  border-bottom: 1px solid rgba(220, 205, 185, 0.6);
+  text-align: center;
+}
+
+.heroStatsRow {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.statVal {
+  font-size: 1.15rem;
+  font-weight: 850;
+  color: #161412;
+  letter-spacing: -0.02em;
+}
+
+.heroStatVal {
+  color: #22c55e;
+}
+
+.statLabel {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #6b5e52;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.heroStatLabel {
+  color: #9ca3af;
+}
+
+.statNote {
+  font-size: 0.6rem;
+  color: #8c7f73;
+}
+
+.cardDesc {
+  font-size: 0.88rem;
+  color: #5a4f44;
+  line-height: 1.55;
+  margin: 0;
+  flex: 1;
+}
+
+.heroDesc {
+  color: #9ca3af;
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+  color: #383029;
+  font-weight: 500;
+}
+
+.heroFeatureItem {
+  color: #d1d5db;
+}
+
+.checkIcon {
+  color: #0b7a48;
+  flex-shrink: 0;
+}
+
+.heroCheckIcon {
+  color: #22c55e;
+}

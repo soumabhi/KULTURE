@@ -27,7 +27,9 @@ export default function HeroTitle() {
           <span className={styles.line}>
             Turn Every <AnimatedBottle />
           </span>
-          <span className={styles.line}>Into an Experience.</span>
+          <span className={`${styles.line} ${styles.titleHighlight}`}>
+            Into an Experience.
+          </span>
         </h1>
 
         <p className={styles.subtitle}>

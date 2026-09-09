@@ -17,7 +17,7 @@ export default function KeycapButton({
   ...props
 }: KeycapButtonProps) {
   const handlePointerDown = (e: PointerEvent<HTMLButtonElement>) => {
-    triggerHaptic("medium");
+    triggerHaptic("deep");
     if (onPointerDown) onPointerDown(e);
   };
 
@@ -49,7 +49,7 @@ export function KeycapLink({
   onPointerDown,
 }: KeycapLinkProps) {
   const handlePointerDown = (e: PointerEvent<HTMLAnchorElement>) => {
-    triggerHaptic("medium");
+    triggerHaptic("link");
     if (onPointerDown) onPointerDown(e);
   };
 

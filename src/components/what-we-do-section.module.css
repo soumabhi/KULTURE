@@ -1,0 +1,889 @@
+.section {
+  position: relative;
+  width: 100%;
+  background: transparent;
+  color: #181512;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  padding: clamp(3.5rem, 6vw, 6rem) 1.5rem clamp(4rem, 6.5vw, 6.5rem);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 76rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 4vw, 3.5rem);
+}
+
+/* ── Section Header ── */
+.header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.15rem;
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: clamp(2.1rem, 5.2vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  color: #181512;
+  margin: 0;
+}
+
+.titleHighlight {
+  background: linear-gradient(135deg, #181512 0%, #059669 65%, #047857 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: clamp(1rem, 2vw, 1.18rem);
+  line-height: 1.6;
+  color: #57534e;
+  max-width: 42rem;
+  margin: 0 auto;
+  font-weight: 450;
+}
+
+/* ── 4-Step Cards Grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+@media (max-width: 1140px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+/* ── Luxury Friendly Card Surface ── */
+.card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(215, 195, 170, 0.75);
+  border-radius: 24px;
+  padding: 1.25rem 1.15rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: 0 8px 24px -4px rgba(100, 70, 40, 0.05);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.28s ease, background-color 0.28s ease;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-sizing: border-box;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  background: rgba(255, 255, 255, 0.98);
+  border-color: rgba(180, 150, 110, 0.85);
+  box-shadow:
+    0 20px 40px -8px rgba(100, 70, 40, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* ── Card Header (Mono Tag & Status Pill) ── */
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 28px;
+}
+
+.stepTag {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #78716c;
+  text-transform: uppercase;
+}
+
+.statusBadge {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 0.22rem 0.6rem;
+  border-radius: 6px;
+  background: rgba(10, 228, 72, 0.14);
+  color: #047857;
+  border: 1px solid rgba(10, 228, 72, 0.35);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.statusDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.8);
+  animation: pulseDot 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulseDot {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: scale(0.75);
+  }
+}
+
+/* ── Colorful Animated SVG Canvas ── */
+.svgCanvas {
+  position: relative;
+  width: 100%;
+  height: 152px;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(220, 205, 185, 0.6);
+}
+
+.canvasBg1 {
+  background: radial-gradient(circle at 50% 50%, #effcf6 0%, #dcfce7 60%, #d1fae5 100%);
+}
+
+.canvasBg2 {
+  background: radial-gradient(circle at 50% 50%, #f0fdf4 0%, #ecfeff 60%, #e0f2fe 100%);
+}
+
+.canvasBg3 {
+  background: radial-gradient(circle at 50% 50%, #fffbeb 0%, #fef3c7 60%, #fde68a 100%);
+}
+
+.canvasBg4 {
+  background: radial-gradient(circle at 50% 50%, #f0fdfa 0%, #ccfbf1 60%, #99f6e4 100%);
+}
+
+.svgGraphic {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── Card Title & Description ── */
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.cardTitle {
+  font-size: 1.18rem;
+  font-weight: 750;
+  color: #181512;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.cardSub {
+  font-size: 0.74rem;
+  color: #78716c;
+  font-weight: 600;
+  margin-top: -0.1rem;
+}
+
+/* ── Feature Checklist (Matching green tick points from section above) ── */
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin: 0.5rem 0 0.45rem;
+  padding-top: 0.65rem;
+  border-top: 1px dashed rgba(215, 195, 170, 0.55);
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.79rem;
+  line-height: 1.38;
+}
+
+.featureCheck {
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 50%;
+  background: #0ae448;
+  color: #052e16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1.5px;
+  box-shadow: 0 1px 3px rgba(10, 228, 72, 0.25);
+}
+
+.featureText {
+  color: #44403c;
+  font-weight: 520;
+}
+
+/* ── Professional Dwell / Capability Pillar Box ── */
+.cardPillar {
+  margin-top: auto;
+  background: #fbf7f0;
+  border-radius: 12px;
+  padding: 0.55rem 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(215, 195, 170, 0.65);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.pillarLabel {
+  font-size: 0.74rem;
+  color: #78716c;
+  font-weight: 550;
+}
+
+.pillarVal {
+  font-size: 0.88rem;
+  font-weight: 750;
+  color: #047857;
+  font-family: var(--font-mono, monospace);
+  letter-spacing: -0.01em;
+}
+
+/* ══════════════════════════════════════════════
+   COLORFUL SVG ANIMATIONS (Pure CSS 120fps)
+   ══════════════════════════════════════════════ */
+
+/* ── Hero Section Bottle Animation Applied Directly ── */
+.bottleStage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottleFloorShadow {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 11px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(15, 23, 42, 0.38) 0%, rgba(15, 23, 42, 0.16) 45%, transparent 75%);
+  filter: blur(2px);
+  animation: bottleShadowPulse 8s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes bottleShadowPulse {
+  0% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.85;
+  }
+
+  14% {
+    transform: translateX(-50%) scale(1.08);
+    opacity: 1;
+  }
+
+  32% {
+    transform: translateX(-50%) scale(0.85);
+    opacity: 0.55;
+  }
+
+  48% {
+    transform: translateX(-50%) scale(1.06);
+    opacity: 0.95;
+  }
+
+  64% {
+    transform: translateX(-50%) scale(0.88);
+    opacity: 0.6;
+  }
+
+  70% {
+    transform: translateX(-50%) scale(0.78);
+    opacity: 0.45;
+  }
+
+  75% {
+    transform: translateX(-50%) scale(1.12);
+    opacity: 1;
+  }
+
+  82% {
+    transform: translateX(-50%) scale(1.02);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.85;
+  }
+}
+
+.touchpointBottle {
+  display: block;
+  height: 108px;
+  width: auto;
+  margin: 0 auto;
+  filter: drop-shadow(0 8px 18px rgba(14, 165, 233, 0.28)) drop-shadow(0 4px 8px rgba(15, 23, 42, 0.12));
+  transform-origin: center bottom;
+  animation: hero-bottle-loop 8s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
+  will-change: transform, opacity;
+  overflow: visible;
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes hero-bottle-loop {
+
+  /* Continuous living bottle float & tilt — NEVER DISAPPEARS */
+  0% {
+    transform: scale(1, 1) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+
+  14% {
+    transform: scale(1.02, 0.98) translateY(2px) rotate(-1.2deg);
+    opacity: 1;
+  }
+
+  32% {
+    transform: scale(0.99, 1.01) translateY(-4px) rotate(1.8deg);
+    opacity: 1;
+  }
+
+  48% {
+    transform: scale(1.01, 0.99) translateY(2px) rotate(-1.5deg);
+    opacity: 1;
+  }
+
+  64% {
+    transform: scale(0.99, 1.01) translateY(-3px) rotate(1.2deg);
+    opacity: 1;
+  }
+
+  /* Water full celebration bounce */
+  70% {
+    transform: scale(1.08, 1.08) translateY(-6px) rotate(0deg);
+    opacity: 1;
+  }
+
+  75% {
+    transform: scale(0.97, 1.03) translateY(1px);
+    opacity: 1;
+  }
+
+  82% {
+    transform: scale(1.01, 0.99) translateY(-1px);
+    opacity: 1;
+  }
+
+  92% {
+    transform: scale(0.99, 1.01) translateY(1px) rotate(-0.6deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1, 1) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.waterFill {
+  transform-origin: center bottom;
+  animation: hero-water-fill 8s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes hero-water-fill {
+
+  /* 1. Empty glass state at cycle start */
+  0%,
+  10% {
+    transform: translateY(70px);
+    opacity: 0.15;
+  }
+
+  14% {
+    transform: translateY(70px);
+    opacity: 0.85;
+  }
+
+  /* 2. Slow, smooth gradual water rise up to shoulder level */
+  58% {
+    transform: translateY(10px);
+    opacity: 1;
+  }
+
+  /* 3. Hold full with wave slosh and active bubbles */
+  78% {
+    transform: translateY(10px);
+    opacity: 1;
+  }
+
+  /* 4. Smoothly drains back down to reset for the next refill cycle */
+  88% {
+    transform: translateY(42px);
+    opacity: 0.7;
+  }
+
+  96%,
+  100% {
+    transform: translateY(70px);
+    opacity: 0.15;
+  }
+}
+
+.waveSurface {
+  animation: wave-slosh 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes wave-slosh {
+  0% {
+    transform: translateX(-3px) scaleY(0.9);
+  }
+
+  100% {
+    transform: translateX(3px) scaleY(1.05);
+  }
+}
+
+.bubble1 {
+  animation: bubble-float-1 2.5s ease-in-out infinite;
+}
+
+.bubble2 {
+  animation: bubble-float-2 3.1s ease-in-out infinite 0.7s;
+}
+
+.bubble3 {
+  animation: bubble-float-3 2.2s ease-in-out infinite 1.2s;
+}
+
+@keyframes bubble-float-1 {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0.2;
+  }
+
+  50% {
+    transform: translateY(-14px) scale(1.1);
+    opacity: 0.75;
+  }
+
+  100% {
+    transform: translateY(-28px) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes bubble-float-2 {
+  0% {
+    transform: translateY(0) scale(0.7);
+    opacity: 0.3;
+  }
+
+  50% {
+    transform: translateY(-18px) scale(1.15);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: translateY(-34px) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes bubble-float-3 {
+  0% {
+    transform: translateY(0) scale(0.9);
+    opacity: 0.2;
+  }
+
+  50% {
+    transform: translateY(-12px) scale(1.05);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: translateY(-24px) scale(0.6);
+    opacity: 0;
+  }
+}
+
+/* ── Phone Scan Laser & Viewfinder ── */
+.scanDeviceGraphic {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.phoneFloatGroup {
+  transform-origin: 120px 70px;
+  animation: phoneFloatBob 6s ease-in-out infinite alternate;
+}
+
+@keyframes phoneFloatBob {
+  0% {
+    transform: translateY(2px) rotate(-0.8deg);
+  }
+
+  50% {
+    transform: translateY(-4px) rotate(0.6deg);
+  }
+
+  100% {
+    transform: translateY(1px) rotate(-0.5deg);
+  }
+}
+
+.reticlePulse {
+  animation: reticleFocus 2.4s ease-in-out infinite alternate;
+  transform-origin: 120px 62px;
+}
+
+@keyframes reticleFocus {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.85;
+  }
+
+  100% {
+    transform: scale(1.03);
+    opacity: 1;
+    filter: drop-shadow(0 0 5px rgba(10, 228, 72, 0.7));
+  }
+}
+
+.laserSweepColor {
+  animation: laserSweepMove 2.4s ease-in-out infinite;
+}
+
+@keyframes laserSweepMove {
+  0% {
+    transform: translateY(0);
+    opacity: 0.65;
+  }
+
+  50% {
+    transform: translateY(32px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 0.65;
+  }
+}
+
+/* ── Rewards Gamification Graphic: Floating Badge & Ticket ── */
+.rewardBadgeBob {
+  animation: badgeBobAnim 3.8s ease-in-out infinite alternate;
+  transform-origin: 64px 70px;
+}
+
+@keyframes badgeBobAnim {
+  0% {
+    transform: translateY(2px) rotate(-1deg);
+  }
+
+  100% {
+    transform: translateY(-4px) rotate(1.5deg);
+  }
+}
+
+.rewardTicketBob {
+  animation: ticketBobAnim 4.2s ease-in-out infinite alternate 0.3s;
+  transform-origin: 156px 70px;
+}
+
+@keyframes ticketBobAnim {
+  0% {
+    transform: translateY(-3px) rotate(1deg);
+  }
+
+  100% {
+    transform: translateY(3px) rotate(-1.5deg);
+  }
+}
+
+/* ── Verified Results Analytics Console ── */
+.analyticsConsoleBob {
+  animation: consoleBob 4s ease-in-out infinite alternate;
+  transform-origin: 120px 68px;
+}
+
+@keyframes consoleBob {
+  0% {
+    transform: translateY(2px);
+  }
+
+  100% {
+    transform: translateY(-3px);
+  }
+}
+
+.telemetryPulse {
+  animation: telemetryPulseAnim 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transform-origin: 112px 28px;
+}
+
+@keyframes telemetryPulseAnim {
+
+  0%,
+  100% {
+    transform: scale(0.85);
+    opacity: 0.3;
+  }
+
+  50% {
+    transform: scale(1.3);
+    opacity: 0.8;
+  }
+}
+
+.peakRingPulse {
+  animation: peakRingPulseAnim 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transform-origin: 130px 44px;
+}
+
+@keyframes peakRingPulseAnim {
+
+  0%,
+  100% {
+    transform: scale(0.88);
+    opacity: 0.35;
+  }
+
+  50% {
+    transform: scale(1.35);
+    opacity: 0.95;
+  }
+}
+
+.chartBar1 {
+  transform-origin: 70px 98px;
+  animation: chartRise1 2.2s ease-in-out infinite alternate;
+}
+
+.chartBar2 {
+  transform-origin: 90px 98px;
+  animation: chartRise2 2.5s ease-in-out infinite alternate 0.2s;
+}
+
+.chartBar3 {
+  transform-origin: 110px 98px;
+  animation: chartRise3 2.1s ease-in-out infinite alternate 0.4s;
+}
+
+.chartBar4 {
+  transform-origin: 130px 98px;
+  animation: chartRise4 2.6s ease-in-out infinite alternate 0.1s;
+}
+
+.chartBar5 {
+  transform-origin: 150px 98px;
+  animation: chartRise5 2.3s ease-in-out infinite alternate 0.3s;
+}
+
+.chartBar6 {
+  transform-origin: 170px 98px;
+  animation: chartRise6 2.4s ease-in-out infinite alternate 0.25s;
+}
+
+@keyframes chartRise1 {
+  0% {
+    transform: scaleY(0.75);
+  }
+
+  100% {
+    transform: scaleY(1.08);
+  }
+}
+
+@keyframes chartRise2 {
+  0% {
+    transform: scaleY(0.8);
+  }
+
+  100% {
+    transform: scaleY(1.05);
+  }
+}
+
+@keyframes chartRise3 {
+  0% {
+    transform: scaleY(0.7);
+  }
+
+  100% {
+    transform: scaleY(1.06);
+  }
+}
+
+@keyframes chartRise4 {
+  0% {
+    transform: scaleY(0.85);
+  }
+
+  100% {
+    transform: scaleY(1.08);
+  }
+}
+
+@keyframes chartRise5 {
+  0% {
+    transform: scaleY(0.72);
+  }
+
+  100% {
+    transform: scaleY(1.04);
+  }
+}
+
+@keyframes chartRise6 {
+  0% {
+    transform: scaleY(0.7);
+  }
+
+  100% {
+    transform: scaleY(1.05);
+  }
+}
+
+/* ══════════════════════════════════════════════
+   HIGH-IMPACT BOTTOM CTA BANNER (Matching Ref)
+   ══════════════════════════════════════════════ */
+.ctaBanner {
+  background: radial-gradient(circle at 85% 50%, #1c221e 0%, #101211 70%, #0d0f0e 100%);
+  color: #fffce1;
+  border-radius: 24px;
+  padding: 2.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
+  margin-top: clamp(1rem, 0.8vw, 0.75rem);
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@media (min-width: 1024px) {
+  .ctaBanner {
+    flex-direction: row;
+    text-align: left;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3.25rem 3.75rem;
+  }
+}
+
+.ctaContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ctaHeading {
+  font-size: clamp(1.65rem, 3.6vw, 2.35rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: #fffce1;
+  margin: 0;
+}
+
+.ctaHeadingHighlight {
+  background: linear-gradient(135deg, #0ae448 0%, #34d399 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ctaSubtext {
+  font-size: 0.96rem;
+  line-height: 1.6;
+  color: #a8a29e;
+  margin: 0;
+  max-width: 36rem;
+}
+
+.ctaActions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  flex-shrink: 0;
+  min-width: 220px;
+}
+
+.primaryKeycap {
+  font-size: 15px !important;
+  padding: 0.75rem 1.45rem 0.88rem !important;
+  width: 100% !important;
+  max-width: 210px !important;
+  display: inline-flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.secondaryLink {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0ae448;
+  text-decoration: none;
+  padding: 0.4rem 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  user-select: none;
+}
+
+.secondaryLink:hover {
+  color: #34d399;
+}

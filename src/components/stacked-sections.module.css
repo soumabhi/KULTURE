@@ -1,0 +1,72 @@
+.slidesWrapper {
+  position: relative;
+  width: 100%;
+  background: #0e100f;
+  overflow-x: hidden;
+}
+
+/* ── Hero Pinned Stage (Fixed under the content curtain) ── */
+.heroSection {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  z-index: var(--z-hero, 1);
+  overflow: hidden;
+  background: #0e100f;
+  will-change: transform, opacity;
+  transform-origin: center 40%;
+  border-top-left-radius: clamp(8px, 1.2vw, 14px);
+  border-top-right-radius: clamp(8px, 1.2vw, 14px);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.heroInner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  overflow: hidden;
+}
+
+/* ── Content Curtain Stage (Slides up over Hero, then scrolls naturally) ── */
+.contentStage {
+  position: relative;
+  z-index: var(--z-content, 10);
+  margin-top: 100vh;
+  margin-top: 100dvh;
+  width: 100%;
+  border-top-left-radius: clamp(20px, 3vw, 36px);
+  border-top-right-radius: clamp(20px, 3vw, 36px);
+  box-shadow: 0 -25px 60px rgba(0, 0, 0, 0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.6);
+  background-color: #fbf6ee;
+  background-image: linear-gradient(
+    180deg,
+    #fbf6ee 0%,
+    #f6eee2 15%,
+    #f0e4d2 45%,
+    #ebd9c0 75%,
+    #e4ceb0 100%
+  );
+  overflow: visible;
+  isolation: isolate;
+  transform: translateZ(0);
+}
+
+/* ── Body Section Wrappers ── */
+.bodySection {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  isolation: isolate;
+}
