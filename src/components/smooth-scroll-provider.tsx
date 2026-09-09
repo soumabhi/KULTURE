@@ -28,44 +28,21 @@ export default function SmoothScrollProvider({
       window.matchMedia("(pointer: coarse)").matches ||
       /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 
-    // Initialize ultra-smooth, continuous Lenis
-    // Piped through Lenis's smooth engine so touch drag is actively cushioned and smoothed
+    // Initialize ultra-smooth, jitter-free Lenis
+    // Uses Lenis's native syncTouch engine for 120fps hardware-fluid touch and wheel
     const lenis = new Lenis({
-      lerp: 0.065, // Continuous exponential damping (buttery cushioned glide for both wheel and touch)
+      lerp: 0.012, // Infinite cloud-soft cinematic damping for wheel scrolling
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 0.55, // Effortless, floating wheel scroll
-      syncTouch: false, // Proxied into the smooth engine so touch drag is ALSO smoothed
-      touchMultiplier: 1.0,
+      wheelMultiplier: 0.75, // Effortless, floating wheel scroll
+      syncTouch: true, // Native Lenis touch engine: 1:1 direct finger tracking with zero jitter
+      syncTouchLerp: 0.012, // Ultra-deep, liquid-velvet momentum coast on flick release
+      touchInertiaExponent: 1.9, // Sustained, gliding flick momentum
+      touchMultiplier: 1.2, // Completely effortless, responsive finger tracking
       virtualScroll: (data) => {
-        const ev = data.event;
-        if (!ev || !ev.type) return true;
-
-        const isTouch = ev.type.startsWith("touch");
-        const isWheel = ev.type.includes("wheel");
-
-        if (isTouch) {
-          // On flick release, give a smooth, natural momentum glide
-          if (ev.type === "touchend") {
-            const absDelta = Math.abs(data.deltaY);
-            if (absDelta > 2) {
-              data.deltaY =
-                Math.sign(data.deltaY) *
-                Math.min(550, Math.pow(absDelta * 22, 0.86));
-            }
-          }
-
-          // Proxy event as "wheel" so Lenis applies full continuous lerp smoothing to touch drag!
-          data.event = new Proxy(ev, {
-            get(target, prop, receiver) {
-              if (prop === "type") return "wheel";
-              const val = Reflect.get(target, prop, receiver);
-              return typeof val === "function" ? val.bind(target) : val;
-            },
-          });
-        } else if (isWheel) {
-          // Softly cap rapid wheel spinning on desktop/laptop
+        // Softly cap rapid wheel spinning on desktop/laptop
+        if (data.event && data.event.type && data.event.type.includes("wheel")) {
           const absDelta = Math.abs(data.deltaY);
           const MAX_WHEEL_IMPULSE = 85;
           if (absDelta > MAX_WHEEL_IMPULSE) {
@@ -74,7 +51,6 @@ export default function SmoothScrollProvider({
               (MAX_WHEEL_IMPULSE + Math.log1p(absDelta - MAX_WHEEL_IMPULSE) * 7);
           }
         }
-
         return true;
       },
     });
