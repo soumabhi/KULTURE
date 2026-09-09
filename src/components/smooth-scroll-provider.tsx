@@ -136,12 +136,11 @@ export default function SmoothScrollProvider({
         // 2-sample low-pass filter eliminates touch sensor micro-jitter
         filteredDeltaY = filteredDeltaY * 0.25 + stepDeltaY * 0.75;
 
-        // Natural, smooth distance scale (78% travel)
-        const TOUCH_SCALE = 0.78;
-        touchTargetY += filteredDeltaY * TOUCH_SCALE;
+        // 1:1 natural touch response: content moves freely with finger without restriction
+        touchTargetY += filteredDeltaY;
 
-        // Bounded lead from current position: prevents runaway fling while keeping glide fluid
-        const MAX_LEAD = Math.min(360, window.innerHeight * 0.45);
+        // Soft lead ceiling only to prevent extreme runaway (generous 1.2x viewport)
+        const MAX_LEAD = window.innerHeight * 1.1;
         touchTargetY = Math.max(
           lenis.animatedScroll - MAX_LEAD,
           Math.min(lenis.animatedScroll + MAX_LEAD, touchTargetY)
@@ -150,9 +149,9 @@ export default function SmoothScrollProvider({
         // Clamp within document bounds
         touchTargetY = Math.max(0, Math.min(lenis.limit, touchTargetY));
 
-        // Soft, continuous exponential damping glide (lerp: 0.07)
+        // Ultra-buttery continuous exponential glide
         lenis.scrollTo(touchTargetY, {
-          lerp: 0.07,
+          lerp: 0.075,
           lock: false,
         });
       }
@@ -166,27 +165,27 @@ export default function SmoothScrollProvider({
 
       // If finger was held stationary before lifting, flick velocity decays
       const timeSinceLastMove = performance.now() - lastMoveTime;
-      const decay = Math.max(0, 1 - timeSinceLastMove / 120);
+      const decay = Math.max(0, 1 - timeSinceLastMove / 140);
       const effectiveVelocity = releaseVelocity * decay;
 
-      // Feather-soft, cushioned flick inertia (capped to max 130px extra)
+      // Generous, silky flick coast (up to 520px) for free, unrestricted momentum
       const absVel = Math.abs(effectiveVelocity);
-      if (absVel > 0.16) {
+      if (absVel > 0.12) {
         const flickBonus =
           Math.sign(effectiveVelocity) *
-          Math.min(130, Math.pow(absVel * 36, 0.76));
+          Math.min(520, Math.pow(absVel * 110, 0.86));
         touchTargetY += flickBonus;
 
-        const MAX_LEAD = Math.min(380, window.innerHeight * 0.48);
+        const MAX_LEAD = window.innerHeight * 1.25;
         touchTargetY = Math.max(
           lenis.animatedScroll - MAX_LEAD,
           Math.min(lenis.animatedScroll + MAX_LEAD, touchTargetY)
         );
         touchTargetY = Math.max(0, Math.min(lenis.limit, touchTargetY));
 
-        // Ultra-smooth deceleration coast (lerp: 0.06)
+        // Luxurious, feather-soft deceleration coast (lerp: 0.05)
         lenis.scrollTo(touchTargetY, {
-          lerp: 0.06,
+          lerp: 0.05,
           lock: false,
         });
       }
