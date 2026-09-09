@@ -105,14 +105,16 @@ export default function CoverFlow() {
     };
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // Watch scroll position: cancel rAF loop immediately when user scrolls past hero
+    // Watch scroll position: cancel rAF loop and hide bottles immediately when user scrolls past hero
     const handleScroll = () => {
-      const past = window.scrollY > window.innerHeight * 0.85;
+      const past = window.scrollY > window.innerHeight * 0.92;
       if (past !== isScrolledPast) {
         isScrolledPast = past;
         if (past) {
           stopLoop();
+          scene.style.visibility = "hidden";
         } else {
+          scene.style.visibility = "visible";
           startLoop();
         }
       }
@@ -128,7 +130,9 @@ export default function CoverFlow() {
         isVisible = entry.isIntersecting;
         if (!isVisible) {
           stopLoop();
-        } else {
+          scene.style.visibility = "hidden";
+        } else if (!isScrolledPast) {
+          scene.style.visibility = "visible";
           startLoop();
         }
       },

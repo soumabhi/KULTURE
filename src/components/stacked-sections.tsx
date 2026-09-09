@@ -47,8 +47,8 @@ export default function StackedSections({
 
     gsap.registerPlugin(ScrollTrigger);
 
-    // Performance configurations: prevent jump on lag, limit heavy callbacks
-    gsap.ticker.lagSmoothing(500, 33);
+    // Performance configurations: align with Lenis for continuous 60/120fps
+    gsap.ticker.lagSmoothing(0);
     ScrollTrigger.config({ limitCallbacks: true });
 
     const ctx = gsap.context(() => {
@@ -67,7 +67,7 @@ export default function StackedSections({
         (context) => {
           const { isDesktop } = context.conditions as { isDesktop: boolean; isMobile: boolean };
 
-          // Hero scale-down into depth as content stage slides over it
+          // Hero scale-down into depth as content stage slides over it (smooth 0.5s scrub)
           gsap.to(hero, {
             scale: isDesktop ? 0.88 : 0.94,
             opacity: isDesktop ? 0.15 : 0.22,
@@ -77,7 +77,7 @@ export default function StackedSections({
               trigger: contentStage,
               start: "top bottom",
               end: "top top",
-              scrub: true,
+              scrub: 0.5,
               fastScrollEnd: true,
               preventOverlaps: true,
               onLeave: () => {
@@ -146,6 +146,21 @@ export default function StackedSections({
       ScrollTrigger.refresh();
     }, containerRef);
 
+    // Instantaneous scroll guard: guarantees hero is hidden when scrolled past
+    const hero = heroRef.current;
+    let wasPast = false;
+    const syncHeroVisibility = () => {
+      if (!hero) return;
+      const past = window.scrollY >= window.innerHeight * 0.92;
+      if (past !== wasPast) {
+        wasPast = past;
+        hero.style.visibility = past ? "hidden" : "visible";
+        hero.style.pointerEvents = past ? "none" : "auto";
+      }
+    };
+    window.addEventListener("scroll", syncHeroVisibility, { passive: true });
+    syncHeroVisibility();
+
     if (document.fonts) {
       document.fonts.ready.then(() => {
         ScrollTrigger.refresh();
@@ -153,6 +168,7 @@ export default function StackedSections({
     }
 
     return () => {
+      window.removeEventListener("scroll", syncHeroVisibility);
       ctx.revert();
     };
   }, []);

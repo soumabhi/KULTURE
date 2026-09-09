@@ -20,18 +20,33 @@ export default function SmoothScrollProvider({
     if (prefersReducedMotion) return;
 
     gsap.registerPlugin(ScrollTrigger);
+    gsap.defaults({ force3D: true, lazy: false });
 
-    // Initialize high-performance inertial smooth scroll
+    // Initialize ultra-smooth, jitter-free Lenis
     const lenis = new Lenis({
-      duration: 1.15,
+      duration: 0.9,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      touchMultiplier: 1.4,
+      wheelMultiplier: 0.72, // Calibrated distance per tick for near, comfortable, controlled scrolling
+      touchMultiplier: 1.0,
+      syncTouch: false,
+      virtualScroll: (data) => {
+        // Continuous soft damping: gently compress large wheel deltas without hard on/off cuts
+        const MAX_DELTA = 140;
+        const absDelta = Math.abs(data.deltaY);
+        if (absDelta > MAX_DELTA) {
+          // Logarithmic soft curve prevents runaway fling without causing stutter
+          data.deltaY =
+            Math.sign(data.deltaY) *
+            (MAX_DELTA + Math.log1p(absDelta - MAX_DELTA) * 12);
+        }
+        return true;
+      },
     });
 
-    // Synchronize Lenis scroll positions with GSAP ScrollTrigger
+    // Synchronize Lenis scroll position with GSAP ScrollTrigger on every frame
     lenis.on("scroll", ScrollTrigger.update);
 
     const onTick = (time: number) => {
@@ -61,7 +76,7 @@ export default function SmoothScrollProvider({
         const targetEl = document.querySelector<HTMLElement>(hash);
         if (targetEl && targetEl instanceof HTMLElement) {
           e.preventDefault();
-          lenis.scrollTo(targetEl, { offset: -24, duration: 1.2 });
+          lenis.scrollTo(targetEl, { offset: -24, duration: 0.9 });
         }
       }
     };
@@ -79,3 +94,4 @@ export default function SmoothScrollProvider({
 
   return <>{children}</>;
 }
+
