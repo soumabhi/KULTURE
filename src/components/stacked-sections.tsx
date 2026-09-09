@@ -72,7 +72,6 @@ export default function StackedSections({
             scale: isDesktop ? 0.88 : 0.94,
             opacity: isDesktop ? 0.15 : 0.22,
             ease: "none",
-            force3D: true,
             scrollTrigger: {
               trigger: contentStage,
               start: "top bottom",
@@ -106,7 +105,6 @@ export default function StackedSections({
               opacity: 1,
               duration: 0.65,
               ease: "power2.out",
-              force3D: true,
               clearProps: "transform",
               scrollTrigger: {
                 trigger: header,
@@ -131,7 +129,6 @@ export default function StackedSections({
               duration: 0.6,
               stagger: 0.06,
               ease: "power2.out",
-              force3D: true,
               clearProps: "transform",
               scrollTrigger: {
                 trigger: sec,

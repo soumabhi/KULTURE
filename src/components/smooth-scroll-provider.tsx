@@ -20,7 +20,7 @@ export default function SmoothScrollProvider({
     if (prefersReducedMotion) return;
 
     gsap.registerPlugin(ScrollTrigger);
-    gsap.defaults({ force3D: true, lazy: false });
+    gsap.defaults({ lazy: false });
 
     // Detect mobile touch screen environment
     const isMobile =
@@ -31,7 +31,7 @@ export default function SmoothScrollProvider({
     // Initialize ultra-smooth, continuous Lenis
     // Uses continuous exponential lerp damping for buttery smooth glide on both wheel and touch
     const lenis = new Lenis({
-      lerp: 0.09, // Continuous exponential damping (silky smooth, never stutters)
+      lerp: 0.075, // Softer continuous exponential damping (silky, cushioned glide)
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
@@ -72,6 +72,7 @@ export default function SmoothScrollProvider({
     let lastTouchY = 0;
     let lastMoveTime = 0;
     let releaseVelocity = 0;
+    let filteredDeltaY = 0;
     let isTouchActive = false;
     let isScrollGesture = false;
     let touchTargetY = 0;
@@ -91,6 +92,7 @@ export default function SmoothScrollProvider({
       lastTouchY = touch.clientY;
       lastMoveTime = now;
       releaseVelocity = 0;
+      filteredDeltaY = 0;
       isTouchActive = true;
       isScrollGesture = false;
 
@@ -117,6 +119,7 @@ export default function SmoothScrollProvider({
       if (!isScrollGesture) {
         if (Math.abs(diffY) > 6 && Math.abs(diffY) >= Math.abs(diffX)) {
           isScrollGesture = true;
+          filteredDeltaY = stepDeltaY;
         } else if (Math.abs(diffX) > 12 && Math.abs(diffX) > Math.abs(diffY)) {
           // Horizontal swipe (let sliders or browser handle)
           isTouchActive = false;
@@ -130,12 +133,15 @@ export default function SmoothScrollProvider({
           e.preventDefault();
         }
 
-        // Natural, smooth distance scale (72% travel)
-        const TOUCH_SCALE = 0.72;
-        touchTargetY += stepDeltaY * TOUCH_SCALE;
+        // 2-sample low-pass filter eliminates touch sensor micro-jitter
+        filteredDeltaY = filteredDeltaY * 0.25 + stepDeltaY * 0.75;
+
+        // Natural, smooth distance scale (78% travel)
+        const TOUCH_SCALE = 0.78;
+        touchTargetY += filteredDeltaY * TOUCH_SCALE;
 
         // Bounded lead from current position: prevents runaway fling while keeping glide fluid
-        const MAX_LEAD = Math.min(320, window.innerHeight * 0.42);
+        const MAX_LEAD = Math.min(360, window.innerHeight * 0.45);
         touchTargetY = Math.max(
           lenis.animatedScroll - MAX_LEAD,
           Math.min(lenis.animatedScroll + MAX_LEAD, touchTargetY)
@@ -144,9 +150,9 @@ export default function SmoothScrollProvider({
         // Clamp within document bounds
         touchTargetY = Math.max(0, Math.min(lenis.limit, touchTargetY));
 
-        // Continuous exponential damping glide (silky smooth, no animation restarts)
+        // Soft, continuous exponential damping glide (lerp: 0.07)
         lenis.scrollTo(touchTargetY, {
-          lerp: 0.09,
+          lerp: 0.07,
           lock: false,
         });
       }
@@ -163,23 +169,24 @@ export default function SmoothScrollProvider({
       const decay = Math.max(0, 1 - timeSinceLastMove / 120);
       const effectiveVelocity = releaseVelocity * decay;
 
-      // Soft, silky flick inertia (capped to max 110px extra)
+      // Feather-soft, cushioned flick inertia (capped to max 130px extra)
       const absVel = Math.abs(effectiveVelocity);
-      if (absVel > 0.18) {
+      if (absVel > 0.16) {
         const flickBonus =
           Math.sign(effectiveVelocity) *
-          Math.min(110, Math.pow(absVel * 32, 0.74));
+          Math.min(130, Math.pow(absVel * 36, 0.76));
         touchTargetY += flickBonus;
 
-        const MAX_LEAD = Math.min(350, window.innerHeight * 0.45);
+        const MAX_LEAD = Math.min(380, window.innerHeight * 0.48);
         touchTargetY = Math.max(
           lenis.animatedScroll - MAX_LEAD,
           Math.min(lenis.animatedScroll + MAX_LEAD, touchTargetY)
         );
         touchTargetY = Math.max(0, Math.min(lenis.limit, touchTargetY));
 
+        // Ultra-smooth deceleration coast (lerp: 0.06)
         lenis.scrollTo(touchTargetY, {
-          lerp: 0.08,
+          lerp: 0.06,
           lock: false,
         });
       }
