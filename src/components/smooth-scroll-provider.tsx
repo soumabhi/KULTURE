@@ -23,12 +23,6 @@ export default function SmoothScrollProvider({
     gsap.registerPlugin(ScrollTrigger);
     gsap.defaults({ lazy: false });
 
-    // Detect mobile / touch devices
-    const isMobile =
-      window.innerWidth <= 768 ||
-      window.matchMedia("(pointer: coarse)").matches ||
-      /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-
     // Anchor navigation handler (#why-kulture, #what-we-do, etc.)
     let lenisInstance: Lenis | null = null;
 
@@ -63,24 +57,17 @@ export default function SmoothScrollProvider({
 
     document.addEventListener("click", handleAnchorClick, { capture: true });
 
-    // On mobile / touch devices: 100% native browser scrolling (identical to /explore page)
-    if (isMobile) {
-      ScrollTrigger.refresh();
-      return () => {
-        document.removeEventListener("click", handleAnchorClick, {
-          capture: true,
-        });
-      };
-    }
-
-    // On desktop: responsive, smooth Lenis (syncTouch: false delegates touch to native)
+    // Initialize Lenis with snappy, controlled parameters (prevents runaway fast fling while avoiding sluggishness)
     const lenis = new Lenis({
-      lerp: 0.08,
+      lerp: 0.1, // Clean, responsive deceleration on desktop
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      syncTouch: false, // 100% native touch physics (like /explore)
+      syncTouch: true, // Intercepts mobile touch so it doesn't fly 5,000px down and lag the UI
+      syncTouchLerp: 0.14, // Crisper, faster settling: stops promptly without sluggish glide
+      touchInertiaExponent: 1.25, // Tightly caps flick momentum: prevents shooting to the end of the page
+      touchMultiplier: 1.0, // 1:1 direct finger tracking while touching: zero resistance
     });
     lenisInstance = lenis;
 

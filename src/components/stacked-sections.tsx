@@ -76,7 +76,7 @@ export default function StackedSections({
               trigger: contentStage,
               start: "top bottom",
               end: "top top",
-              scrub: 0.5,
+              scrub: isDesktop ? 0.2 : true,
               fastScrollEnd: true,
               preventOverlaps: true,
               onLeave: () => {
